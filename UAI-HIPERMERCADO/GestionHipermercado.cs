@@ -8,7 +8,9 @@ using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using UAI_HIPERMERCADO.Facturacion;
+using BLL;
+using BE;
+
 
 namespace UAI_HIPERMERCADO
 {
@@ -17,27 +19,40 @@ namespace UAI_HIPERMERCADO
         public GestionHipermercado()
         {
             InitializeComponent();
-            LstPersonasIndividuos = new List<PersonaIndividuo>();
-            LstPymes = new List<PersonaPyme>();
-            LstProductos = new List<Producto>();
-            LstFacturas = new List<Factura>();
+            //LstPersonasIndividuos = new List<PersonaIndividuo>();
+            //LstPymes = new List<PersonaPyme>();
+            //LstProductos = new List<Producto>();
+            //LstFacturas = new List<Factura>();
+            oBLLProd = new BLLProducto();
+            oBEProducto= new BEProducto();
+            oBLLPyme = new BLLPersonaPyme();
+            oBLLPIndividuo = new BLLPersonaIndividuo();
+            oBEPersonaIndividuo = new BEPersonaIndividuo();
+            oBLLFactura=new BLLFactura();
             
-           
+
+
         }
 
-        List<PersonaIndividuo> LstPersonasIndividuos;
-        List<PersonaPyme> LstPymes;
-        List<Producto> LstProductos;
-        List<Factura> LstFacturas;
+        //List<PersonaIndividuo> LstPersonasIndividuos;
+        //List<PersonaPyme> LstPymes;
+        //List<Producto> LstProductos;
+        //List<Factura> LstFacturas;
 
 
         #region ObjetosParaElFormulario
-        PersonaIndividuo oPersonaIndividuo;
-        PersonaPyme oPersonaPyme;
-        Producto oProducto;
-        Factura oFactura;
-       
-
+        //PersonaIndividuo oPersonaIndividuo;
+        //PersonaPyme oPersonaPyme;
+        //Producto oProducto;
+        //Factura oFactura;
+        BLLProducto oBLLProd;
+        BEProducto oBEProducto;
+        BLLPersonaPyme oBLLPyme;
+        BLLPersonaIndividuo oBLLPIndividuo;
+        BEPersonaIndividuo oBEPersonaIndividuo;
+        BEPersonaPyme oBEPyme;
+        BLLFactura oBLLFactura;
+        BEFactura oBEFactura;
         #endregion
 
 
@@ -65,10 +80,53 @@ namespace UAI_HIPERMERCADO
         }
         #endregion
 
+        void LimpiarPyme()
+        {
+            txtCUIT.Text = string.Empty;
+            txtRazonSocial.Text= string.Empty;  
+        }
+
+        void LimpiarIndividuo()
+        {
+            txtApellido.Text= string.Empty; 
+            txtNombre.Text= string.Empty;
+            txtCUIT.Text= string.Empty;
+            txtCodigo.Text= string.Empty;
+        }
+        public void CargarPersonaIndData()
+        {
+            dgvPersonas.DataSource = null;
+            dgvPersonas.DataSource = oBLLPIndividuo.ListarTodo();
+           
+
+        }
+        public void CargarPymeData()
+        {
+            dgvPyme.DataSource = null;
+            dgvPyme.DataSource = oBLLPyme.ListarTodo();
+        }
+
         private void GestionHipermercado_Load(object sender, EventArgs e)
         {
-            cbNombreProducto.DataSource = Enum.GetValues(typeof(EnumParaProductos.ProductosVarios));
             MessageBox.Show("Usted ingresara a la seccion de hipermercado,gracias por utilizar nuestro servicio.", "Atencion", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            CargarProductoAdata();
+            CargarPymeData();
+            CargarPersonaIndData();
+            CargarFactura();
+
+        }
+
+        void CargarFactura()
+        {
+            dgvFactura.DataSource = null;
+            dgvFactura.DataSource = oBLLFactura.ListarTodo();
+        }
+
+        public void CargarProductoAdata()
+        {
+            cbProducto.DataSource = null;
+            cbProducto.DataSource = oBLLProd.ListarTodo();
+            cbProducto.Refresh();
         }
 
         #region AltaPersona
@@ -86,64 +144,53 @@ namespace UAI_HIPERMERCADO
                 // Si se seleccionó la opción Individuo
                 if (rbIndividuo.Checked)
                 {
-                    // Verificar que se hayan ingresado nombre y apellido
-                    if (txtApellido.Text == string.Empty || txtNombre.Text == string.Empty)
-                    {
-                        throw new ArgumentException("Por favor complete los campos nombre y apellido.");
+                  // Verificar que se hayan ingresado nombre y apellido
+                   if (txtApellido.Text == string.Empty || txtNombre.Text == string.Empty)
+                   {
+                      throw new ArgumentException("Por favor complete los campos nombre y apellido.");
+                   }
+
+                    
+                       oBEPersonaIndividuo=new BEPersonaIndividuo();
+                       oBEPersonaIndividuo.CUIT = Convert.ToInt64(txtCUIT.Text);
+                       oBEPersonaIndividuo.Nombre = txtNombre.Text;
+                       oBEPersonaIndividuo.Apellido = txtApellido.Text;
+                       oBLLPIndividuo.Guardar(oBEPersonaIndividuo);
+
+                     // Actualizar los datos en el DataGridView
+                         CargarPersonaIndData();
+                         LimpiarIndividuo();
+
+                      // Mostrar mensaje de éxito
+                      MessageBox.Show("Cliente Persona creado con éxito", "Info", MessageBoxButtons.OK, MessageBoxIcon.Information);
+
+                   
                     }
-
-                    // Crear una nueva instancia de PersonaIndividuo
-                    oPersonaIndividuo = new PersonaIndividuo();
-                    oPersonaIndividuo.CUIT = Convert.ToInt64(txtCUIT.Text);
-                    oPersonaIndividuo.Nombre = txtNombre.Text;
-                    oPersonaIndividuo.Apellido = txtApellido.Text;
-
-                    // Agregar la persona individuo a la lista correspondiente
-                    LstPersonasIndividuos.Add(oPersonaIndividuo);
-
-                    // Actualizar los datos en el DataGridView
-                    CargarPersonaIndData();
-
-                    // Mostrar mensaje de éxito
-                    MessageBox.Show("Cliente Persona creado con éxito", "Info", MessageBoxButtons.OK, MessageBoxIcon.Information);
-
-                    // Limpiar los campos de entrada
-                    txtApellido.Clear();
-                    txtNombre.Clear();
-                    txtCUIT.Clear();
-                }
-                // Si se seleccionó la opción PYME
-                else if (rbPyme.Checked)
-                {
-                    // Verificar que se haya ingresado la razón social
-                    if (txtRazonSocial.Text == string.Empty)
+                    //// Si se seleccionó la opción PYME
+                    else if (rbPyme.Checked)
                     {
-                        throw new ArgumentException("Por favor complete el campo razón social.");
-                    }
+                      // Verificar que se haya ingresado la razón social
+                      if (txtRazonSocial.Text == string.Empty)
+                       {
+                           throw new ArgumentException("Por favor complete el campo razón social.");
+                      }
+                       // Crear una nueva instancia de PersonaPyme
+                             oBEPyme = new BEPersonaPyme();
+                             oBEPyme.CUIT = Convert.ToInt64(txtCUIT.Text);
+                             oBEPyme.RazonSocial = txtRazonSocial.Text;
 
-                    // Crear una nueva instancia de PersonaPyme
-                    oPersonaPyme = new PersonaPyme();
-                    oPersonaPyme.CUIT = Convert.ToInt64(txtCUIT.Text);
-                    oPersonaPyme.RazonSocial = txtRazonSocial.Text;
+                       // Agregar la persona pyme a la lista correspondiente
+                           oBLLPyme.Guardar(oBEPyme);
 
-                    // Agregar la persona pyme a la lista correspondiente
-                    LstPymes.Add(oPersonaPyme);
-
+                      // Actualizar los datos en el DataGridView
+                       CargarPymeData();
+                      // Limpiar los campos de entrada
+                        LimpiarPyme();
                     // Mostrar mensaje de éxito
                     MessageBox.Show("Cliente PYME creado con éxito", "Info", MessageBoxButtons.OK, MessageBoxIcon.Information);
-
-                    // Actualizar los datos en el DataGridView
-                    CargarPymeData();
-
-                    // Limpiar los campos de entrada
-                    txtCUIT.Clear();
-                    txtRazonSocial.Clear();
                 }
             }
-            catch (FormatException ex)
-            {
-                MessageBox.Show("Error de formato: Por favor ingrese un número válido para el CUIT.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-            }
+            
             catch (ArgumentException ex)
             {
                 MessageBox.Show("Error de validación: " + ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
@@ -158,39 +205,6 @@ namespace UAI_HIPERMERCADO
 
 
 
-        #region CargarDatosAData
-        public void CargarPymeData()
-        {
-            dgvPyme.DataSource = null;
-            dgvPyme.DataSource = LstPymes;
-        }
-        public void CargarPersonaIndData()
-        {
-            dgvPersonas.DataSource = null;
-            dgvPersonas.DataSource = LstPersonasIndividuos;
-            dgvPersonas.Refresh();
-
-        }
-
-        public void CargarProductoAdata()
-        {
-            cbProducto.DataSource = null;
-            cbProducto.DataSource = LstProductos;
-            cbProducto.Refresh();
-        }
-
-        public void CargarFacturaAdata()
-        {
-            dgvFactura.DataSource = null;
-            dgvFactura.DataSource = LstFacturas;
-            //propiedad de la grilla para autosize de columnas
-            this.dgvFactura.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.DisplayedCells;
-
-        }
-
-        #endregion
-
-
 
 
         #region BajaPersona
@@ -202,74 +216,55 @@ namespace UAI_HIPERMERCADO
             try
             {
 
-                if (txtCUIT.Text == string.Empty)
-                {
-                    throw new ArgumentException("Por favor complete el campo cuit");
-                }
-
-                long cuit = Convert.ToInt64(txtCUIT.Text);
+              
 
                 if (dgvPersonas.SelectedRows.Count > 0)
                 {
-                    foreach (PersonaIndividuo item in LstPersonasIndividuos)
+
+                    Respuesta = MessageBox.Show("Se va a borrar el indivuo ", "borrar", MessageBoxButtons.YesNo);
+                    if (Respuesta == DialogResult.Yes)
                     {
-                        if (cuit == item.CUIT)
+                        AsignarIndivdual();
+                        if (oBLLPIndividuo.Baja(oBEPersonaIndividuo))
                         {
-                            Respuesta = MessageBox.Show("Se va a borrar el elemento de la lista", "borrar", MessageBoxButtons.YesNo);
-
-                            if (Respuesta == DialogResult.Yes)
-                            {
-                                LstPersonasIndividuos.Remove(item);
-                                MessageBox.Show("Cliente persona borrado de la lista con exito", "Info", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                                break;
-                            }
+                            CargarPersonaIndData();
+                            LimpiarIndividuo();
                         }
-
-                     
+                        else
+                        {
+                            throw new ArgumentException("No se ha podido eliminar a la persona");
+                        }
                     }
-
-                   
-
-
-                    CargarPersonaIndData();
-                    txtApellido.Clear();
-                    txtNombre.Clear();
-                    txtCUIT.Clear();
-                   
-
-
+                    
 
                 }
                 else if (dgvPyme.SelectedRows.Count > 0)
                 {
-                    foreach (PersonaPyme item in LstPymes)
-                    {
-                        if (cuit == item.CUIT)
-                        {
-                            Respuesta = MessageBox.Show("Se va a borrar el elemento de la lista", "borrar", MessageBoxButtons.YesNo);
 
-                            if (Respuesta == DialogResult.Yes)
-                            {
-                                LstPymes.Remove(item);
-                                MessageBox.Show("Cliente PYME borrado de la lista con exito", "Info", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                                break;
-                            }
+                    Respuesta = MessageBox.Show("Se va a borrar la pyme ", "borrar", MessageBoxButtons.YesNo);
+                    if (Respuesta == DialogResult.Yes)
+                    {
+                        AsignarPyme();
+
+                        if (oBLLPyme.Baja(oBEPyme))
+                        {
+                            CargarPymeData();
+                            LimpiarPyme();
                         }
-                        
+                        else
+                        {
+                            throw new ArgumentException("No se ha podido eliminar a la pyme");
+                        }
                     }
 
-
-                    CargarPymeData();
-                    txtCUIT.Clear();
-                    txtRazonSocial.Clear();
-                    
                 }
+
                 else
                 {
-                   throw new ArgumentException("Debe seleccionar al menos un cliente");
+                    throw new ArgumentException("Debe seleccionar al menos un cliente");
                 }
+                
             }
-
 
             catch (ArgumentException ex)
             {
@@ -286,6 +281,47 @@ namespace UAI_HIPERMERCADO
 
 
         #endregion
+
+        private void dgvPersonas_CellContentClick(object sender, DataGridViewCellEventArgs e)
+        {
+            dgvPyme.ClearSelection();
+            oBEPersonaIndividuo = (BEPersonaIndividuo)dgvPersonas.CurrentRow.DataBoundItem;
+            txtCodigo.Text = oBEPersonaIndividuo.Codigo.ToString();
+            txtCUIT.Text = oBEPersonaIndividuo.CUIT.ToString();
+            txtNombre.Text = oBEPersonaIndividuo.Nombre.ToString();
+            txtApellido.Text = oBEPersonaIndividuo.Apellido.ToString();
+            txtRazonSocial.Text = string.Empty;
+            rbIndividuo.Checked = true;
+
+
+        }
+
+        private void dgvPyme_CellContentClick(object sender, DataGridViewCellEventArgs e)
+        {
+            dgvPersonas.ClearSelection();
+            oBEPyme = (BEPersonaPyme)dgvPyme.CurrentRow.DataBoundItem;
+            txtCodigo.Text = oBEPyme.Codigo.ToString();
+            txtCUIT.Text = oBEPyme.CUIT.ToString();
+            txtRazonSocial.Text = oBEPyme.RazonSocial.ToString();
+            txtNombre.Text = string.Empty;
+            txtApellido.Text = string.Empty;
+            rbPyme.Checked = true;
+        }
+        void AsignarIndivdual()
+        {
+            oBEPersonaIndividuo.Codigo = Convert.ToInt32(txtCodigo.Text);
+            oBEPersonaIndividuo.Nombre=txtNombre.Text;
+            oBEPersonaIndividuo.Apellido=txtApellido.Text;
+            oBEPersonaIndividuo.CUIT= Convert.ToInt64(txtCUIT.Text);
+        }
+
+        void AsignarPyme()
+        {
+            oBEPyme.Codigo = Convert.ToInt32(txtCodigo.Text);
+            oBEPyme.RazonSocial = txtRazonSocial.Text;
+            oBEPyme.CUIT= Convert.ToInt64(txtCUIT.Text);
+        }
+
 
         #region ModificarPersona
         private void btnModificar_Click(object sender, EventArgs e)
@@ -301,87 +337,35 @@ namespace UAI_HIPERMERCADO
                 {
 
 
-
                     if (txtApellido.Text == string.Empty && txtNombre.Text == string.Empty)
                     {
                         throw new ArgumentException("Debe completar los campos nombre y apellido");
                     }
 
-                    oPersonaIndividuo = new PersonaIndividuo();
-                    oPersonaIndividuo.CUIT = Convert.ToInt64(txtCUIT.Text);
-                    oPersonaIndividuo.Nombre = txtNombre.Text;
-                    oPersonaIndividuo.Apellido = txtApellido.Text;
-
-                    bool busqueda = false;
-
-                    foreach (PersonaIndividuo item in LstPersonasIndividuos)
-                    {
-                        if (oPersonaIndividuo.CUIT == item.CUIT)
-                        {
-                            item.Nombre = oPersonaIndividuo.Nombre;
-                            item.Apellido = oPersonaIndividuo.Apellido;
-                            MessageBox.Show("Cliente Persona modificado de la lista con exito", "Info", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                            busqueda = true;
-                            break;
-                        }
-                        
-                    }
-
-                    if (busqueda == false) 
-                    {
-                        throw new ClienteNoEncontrado();
-                    }
-
+                    AsignarIndivdual();
+                    oBLLPIndividuo.Guardar(oBEPersonaIndividuo);
+                    LimpiarIndividuo();
                     CargarPersonaIndData();
-
-                    txtApellido.Clear();
-                    txtNombre.Clear();
-                    txtCUIT.Clear();
                 }
+
                 else if (dgvPyme.SelectedRows.Count > 0)
                 {
                     if (txtRazonSocial.Text == string.Empty)
-                    {
+                   {
                         throw new ArgumentException("Debe completar el campo razon social");
-                    }
+                   }
 
-                    oPersonaPyme = new PersonaPyme();
-                    oPersonaPyme.CUIT = Convert.ToInt64(txtCUIT.Text);
-                    oPersonaPyme.RazonSocial = txtRazonSocial.Text;
-
-                    bool busqueda = false; 
-
-                    foreach (PersonaPyme item in LstPymes)
-                    {
-                        if (oPersonaPyme.CUIT == item.CUIT)
-                        {
-                            item.RazonSocial = oPersonaPyme.RazonSocial;
-                            MessageBox.Show("Cliente PYME modificado de la lista con exito", "Info", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                            busqueda = true;
-                            break;
-                        }
-                       
-                    }
-
-                    if (busqueda == false)
-                    {
-                        throw new ClienteNoEncontrado();
-                    }
-
+                    AsignarPyme();
+                    oBLLPyme.Guardar(oBEPyme);
+                    LimpiarPyme();
                     CargarPymeData();
-                    txtRazonSocial.Clear();
-                    txtCUIT.Clear();
+                
                 }
 
                 else
                 {
                     throw new ArgumentException("Debe seleccionar al menos un cliente");
                 }
-            }
-
-            catch (ClienteNoEncontrado ex)
-            {
-                MessageBox.Show($"{ex.Message}");
             }
             catch (ArgumentException ex)
             {
@@ -396,6 +380,14 @@ namespace UAI_HIPERMERCADO
 
         }
 
+        void LimpiarProducto()
+        {
+            txtCantidad.Text= string.Empty; 
+            txtPrecioProducto.Text= string.Empty;
+            txtNombreProducto.Text= string.Empty;
+            txtCodigoProducto.Text= string.Empty;   
+        }
+
 
         #endregion
 
@@ -403,20 +395,21 @@ namespace UAI_HIPERMERCADO
         {
             try
             {
-                if (txtCodigoProducto.Text == string.Empty || txtPrecioProducto.Text == string.Empty || txtCantidad.Text == string.Empty)
+                if (txtNombreProducto.Text == string.Empty || txtPrecioProducto.Text == string.Empty || txtCantidad.Text == string.Empty)
                 {
                     throw new ArgumentException("Debe completar todos los campos para producto");
                 }
                 else
                 {
-                    oProducto = new Producto(Convert.ToInt32(txtCodigoProducto.Text), cbNombreProducto.SelectedItem.ToString(), Convert.ToDouble(txtPrecioProducto.Text), Convert.ToInt32(txtCantidad.Text));
-                    LstProductos.Add(oProducto);
+                    oBEProducto=new BEProducto();
+                    oBEProducto.Nombre=this.txtNombreProducto.Text;
+                    oBEProducto.Precio = Convert.ToInt32(this.txtPrecioProducto.Text);
+                    oBEProducto.Cantidad = Convert.ToInt32(this.txtCantidad.Text);
 
+                    oBLLProd.Guardar(oBEProducto);
                     CargarProductoAdata();
-                    txtPrecioProducto.Clear();
-                    txtCodigoProducto.Clear();
-                    txtCantidad.Clear();
-                    MessageBox.Show("Producto creado con exito", "Info", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    LimpiarProducto();
+                  MessageBox.Show("Producto creado con exito", "Info", MessageBoxButtons.OK, MessageBoxIcon.Information);
 
                 }
             }
@@ -442,84 +435,40 @@ namespace UAI_HIPERMERCADO
 
                 if (dgvFactura.SelectedRows.Count > 0 && cbProducto.SelectedItem != null)
                 {
-                    oFactura = (Factura)dgvFactura.SelectedRows[0].DataBoundItem;
-                    oProducto = (Producto)cbProducto.SelectedItem;
+                    oBEFactura = (BEFactura)dgvFactura.SelectedRows[0].DataBoundItem;
+                    oBEProducto = (BEProducto)cbProducto.SelectedItem;
 
                     if (cantidad == 0)
                     {
                         throw new ArgumentException("Debe agregar una cantidad valida");
                     }
 
-                    if (oFactura.Persona == oPersonaIndividuo)
+                    if (cantidad > oBEProducto.Cantidad)
                     {
-
-                        if (cantidad > 0)
-                        {
-                            if (cantidad > oProducto.Cantidad)
-                            {
-                                throw new ArgumentException("No hay sufiente cantidad en stock");
-                            }
-                            if (oProducto.Cantidad == 0)
-                            {
-                                LstProductos.Remove(oProducto);
-                                CargarProductoAdata();
-                            }
-                            oProducto.Cantidad -= cantidad;
-
-                            Producto productoAsociado = new Producto();
-                            {
-                                productoAsociado.Nombre = oProducto.Nombre;
-                                productoAsociado.Precio = oProducto.Precio;
-                                productoAsociado.Codigo = oProducto.Codigo;
-                                productoAsociado.Cantidad = cantidad;
-                            }
-                            CargarProductoAdata();
-                            LstFacturas.Remove(oFactura);
-                            oFactura.Estado = "Pendiente de pago";
-                            oFactura.ListaProductos.Add(productoAsociado);
-                            LstFacturas.Add(oFactura);
-                            CargarFacturaAdata();
-                        }
-
-
+                        throw new ArgumentException("Debe agregar una cantidad valida");
                     }
 
-                    else if (oFactura.Persona == oPersonaPyme)
+                    if (oBEProducto.Cantidad == 0)
                     {
 
-                        if (cantidad > 0)
-                        {
-                            if (cantidad > oProducto.Cantidad)
-                            {
-                                throw new ArgumentException("No hay sufiente cantidad en stock");
-                            }
-                            if (oProducto.Cantidad == 0)
-                            {
-                                LstProductos.Remove(oProducto);
-                                CargarProductoAdata();
-                            }
-                            oProducto.Cantidad -= cantidad;
-                            Producto productoAsociado = new Producto();
-                            {
-                                productoAsociado.Nombre = oProducto.Nombre;
-                                productoAsociado.Precio = oProducto.Precio;
-                                productoAsociado.Codigo = oProducto.Codigo;
-                                productoAsociado.Cantidad = cantidad;
-                            }
-                            CargarProductoAdata();
-                            LstFacturas.Remove(oFactura);
-                            oFactura.Estado = "Pendiente de pago";
-                            oFactura.ListaProductos.Add(productoAsociado);
-                            LstFacturas.Add(oFactura);
-                            CargarFacturaAdata();
-                       
-                        }
                     }
-                }
-                else
-                {
-                    throw new ArgumentException("Debe seleccionar una factura y un producto para asociar");
-                }
+                    if (cantidad > 0)
+                    {
+                        BEProducto productoAsociado = new BEProducto();
+                        {
+                            productoAsociado.Nombre = oBEProducto.Nombre;
+                            productoAsociado.Precio = oBEProducto.Precio;
+                            productoAsociado.Codigo = oBEProducto.Codigo;
+                            productoAsociado.Cantidad = cantidad;
+                        }
+
+                        oBEProducto.Cantidad -= cantidad;
+                        oBLLProd.Guardar(oBEProducto);
+                        oBLLFactura.AsociarProducto(oBEFactura, productoAsociado);
+                        CargarFactura();
+                        CargarProductoAdata();
+                    }
+                } 
             }
 
             catch (ArgumentException ex)
@@ -540,33 +489,31 @@ namespace UAI_HIPERMERCADO
             try
             {
                 if (dgvPersonas.SelectedRows.Count > 0)
-                {
-                    oPersonaIndividuo = (PersonaIndividuo)dgvPersonas.SelectedRows[0].DataBoundItem;
-
-                    oFactura = new Factura(oPersonaIndividuo, "Asociado sin productos");
-
-
-                    LstFacturas.Add(oFactura);
-
-                    CargarFacturaAdata();
+               {
+                    oBEPersonaIndividuo = (BEPersonaIndividuo)dgvPersonas.CurrentRow.DataBoundItem;
+                    oBEFactura = new BEFactura();
+                    oBEFactura.Estado = "Asociado";
+                    oBEFactura.FechaFactura=DateTime.Now;
+                    oBEFactura.Persona = oBEPersonaIndividuo;
+                    oBLLFactura.Guardar(oBEFactura);
+                    CargarFactura();
                     dgvPersonas.ClearSelection();
-                }
-                else if (dgvPyme.SelectedRows.Count > 0)
-                {
-                    oPersonaPyme = (PersonaPyme)dgvPyme.SelectedRows[0].DataBoundItem;
-
-                    oFactura = new Factura(oPersonaPyme, "Asociado sin productos");
-
-                    LstFacturas.Add(oFactura);
-                    CargarFacturaAdata();
-
+               }
+             else if (dgvPyme.SelectedRows.Count > 0)
+             {
+                    oBEPyme=(BEPersonaPyme)dgvPyme.CurrentRow.DataBoundItem;
+                    oBEFactura=new BEFactura();
+                    oBEFactura.Estado = "Asociado";
+                    oBEFactura.FechaFactura = DateTime.Now;
+                    oBEFactura.Persona=oBEPyme; 
+                    oBLLFactura.Guardar (oBEFactura);
+                    CargarFactura();
                     dgvPyme.ClearSelection();
-
-                }
-                else
+             }
+               else
                 {
                     throw new ArgumentException("Debe seleccionar al menos un cliente para crear factura");
-                }
+               }
             }
             catch (ArgumentException ex)
             {
@@ -579,108 +526,146 @@ namespace UAI_HIPERMERCADO
 
         }
 
-        private void dgvPersonas_CellContentClick(object sender, DataGridViewCellEventArgs e)
-        {
-            dgvPyme.ClearSelection();
-        }
-
-        private void dgvPyme_CellContentClick(object sender, DataGridViewCellEventArgs e)
-        {
-            dgvPersonas.ClearSelection();
-        }
+      
         
 
         private void dgvFactura_CellContentClick(object sender, DataGridViewCellEventArgs e)
         {
-            oFactura = (Factura)dgvFactura.CurrentRow.DataBoundItem;
+            oBEFactura = (BEFactura)dgvFactura.CurrentRow.DataBoundItem;
 
             dgvFactProductos.DataSource = null;
 
-            dgvFactProductos.DataSource = oFactura.ListaProductos;
+            dgvFactProductos.DataSource = oBEFactura.ListaProductos;
 
             dgvFactProductos.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.DisplayedCells;
 
-
-            if (oFactura.Persona is ITCalculable oPersona)
+            if (oBEFactura.Persona is BEPersonaIndividuo)
             {
-                lblImpuestos.Text = oFactura.Persona.CalcularImpuestoPais(oFactura.ListaProductos).ToString();
-                oPersona.CalcularTotalSinImpuesto(oFactura.ListaProductos);
-                lblTotalSImpuestos.Text = oPersona.Total.ToString();
-                lblCuitCliente.Text = oFactura.Persona.retonarCuit().ToString();
-            }
+                lblCuitCliente.Text =(oBLLPIndividuo.retonarCuit(oBEFactura.Persona)).ToString();
+             
+                if (oBEFactura.ListaProductos != null)
+                {
+                    lblImpuestos.Text = (oBLLPIndividuo.CalcularImpuestoPais(oBEFactura.ListaProductos).ToString());
+                    lblTotalNormal.Text = (oBLLPIndividuo.CalcularPrecioNormal(oBEFactura.ListaProductos).ToString());
+                    lblTotalConImpuestos.Text = (oBLLPIndividuo.CalcularPrecioCompra(oBEFactura.ListaProductos).ToString());
 
+
+                }
+                else
+                {
+                    lblImpuestos.Text=string.Empty;
+                    lblTotalConImpuestos.Text = string.Empty;
+                    lblTotalNormal.Text=string.Empty;
+                }
+            
+
+            }
+            else
+            {
+
+                lblCuitCliente.Text =(oBLLPyme.retonarCuit(oBEFactura.Persona)).ToString();
+               
+                if (oBEFactura.ListaProductos != null)
+                {
+                    lblImpuestos.Text = (oBLLPyme.CalcularImpuestoPais(oBEFactura.ListaProductos).ToString());
+                    lblTotalNormal.Text = (oBLLPyme.CalcularPrecioNormal(oBEFactura.ListaProductos).ToString());
+                    lblTotalConImpuestos.Text = (oBLLPyme.CalcularPrecioCompra(oBEFactura.ListaProductos).ToString());
+                }
+                else
+                {
+                    lblImpuestos.Text = string.Empty;
+                    lblTotalNormal.Text = string.Empty;
+                    lblTotalConImpuestos.Text = string.Empty;
+                }
+               
+            }
 
 
         }
 
         private void btnPagarProducto_Click(object sender, EventArgs e)
         {
-           
-            if (dgvFactura.SelectedRows.Count > 0 && oFactura.ListaProductos != null)
+            try
             {
-
-                oFactura = (Factura)dgvFactura.SelectedRows[0].DataBoundItem;
-
-                if (oFactura.Persona == oPersonaIndividuo)
+                if (dgvFactura.SelectedRows.Count > 0)
                 {
 
-                    LstFacturas.Remove(oFactura);
-                    oFactura.Estado = "Pagado";
-                    LstFacturas.Add(oFactura);
-                    CargarFacturaAdata();
-                }
+                    oBEFactura = (BEFactura)dgvFactura.CurrentRow.DataBoundItem;
 
-                else if (oFactura.Persona == oPersonaPyme)
-                {
-                    LstFacturas.Remove(oFactura);
-                    oFactura.Estado = "Pagado";
-                    LstFacturas.Add(oFactura);
-                    CargarFacturaAdata();
+                    if (oBEFactura.Persona is BEPersonaIndividuo)
+                    {
+                        double TraerTotal = 0;
+                        TraerTotal = (oBLLPIndividuo.CalcularPrecioCompra(oBEFactura.ListaProductos));
+
+                        if (Convert.ToDouble(txtAbonoFactura.Text) == TraerTotal)
+                        {
+                            oBLLFactura.FacturaAbonada(oBEFactura);
+                            CargarFactura();
+                            txtAbonoFactura.Text = string.Empty;
+                            MessageBox.Show("Factura abonada con exito,muchas gracias", "Los esperamos nuevamente", MessageBoxButtons.OK, MessageBoxIcon.Information);
+
+                        }
+                        else
+                        {
+                            MessageBox.Show("El monto ingresado no es correcto,recuerde que los decimales son con un punto", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                        }
+
+                    }
+                    else if (oBEFactura.Persona is BEPersonaPyme)
+                    {
+                        double TraerTotal = 0;
+                        TraerTotal = (oBLLPyme.CalcularPrecioCompra(oBEFactura.ListaProductos));
+                        if (Convert.ToDouble(txtAbonoFactura.Text) == TraerTotal)
+                        {
+                            oBLLFactura.FacturaAbonada(oBEFactura);
+                            CargarFactura();
+                            txtAbonoFactura.Text = string.Empty;
+                            MessageBox.Show("Factura abonada con exito,muchas gracias", "Los esperamos nuevamente", MessageBoxButtons.OK, MessageBoxIcon.Information);
+
+                        }
+                        else
+                        {
+                            MessageBox.Show("El monto ingresado no es correcto,recuerde que los decimales son con un punto", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                        }
+
+                    }
+
                 }
+                else
+                {
+                    MessageBox.Show("Debe seleccionar una factura para poder abonar", "Atencion", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                }
+            }
+            catch(Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
+
 
             }
-        }
+
+
+
 
         private void btnBajaProducto_Click(object sender, EventArgs e)
         {
             try
             {
                 DialogResult Respuesta;
-
-                if (txtCodigoProducto.Text == string.Empty)
+                AsignarProd();
+                 Respuesta = MessageBox.Show("Se va a borrar el producto del combo", "borrar", MessageBoxButtons.YesNo);
+                  if (Respuesta == DialogResult.Yes)
                 {
-                    throw new ArgumentException("Debe completar el campo codigo!");
-                }
-
-                int cod = Convert.ToInt32(txtCodigoProducto.Text);
-
-                if (cbProducto.SelectedItem != null)
-                {
-                    foreach (Producto item in LstProductos)
+                    if (oBLLProd.Baja(oBEProducto))
                     {
-                        if (cod == item.Codigo)
-                        {
-                            Respuesta = MessageBox.Show("Se va a borrar el producto del combo", "borrar", MessageBoxButtons.YesNo);
-
-                            if (Respuesta == DialogResult.Yes)
-                            {
-                                LstProductos.Remove(item);
-                                break;
-                            }
-                        }
+                        CargarProductoAdata();
+                        LimpiarProducto();
+                        MessageBox.Show("Producto borrado con exito", "Info", MessageBoxButtons.OK, MessageBoxIcon.Information);
                     }
-
-                    CargarProductoAdata();
-                    txtPrecioProducto.Clear();
-                    txtCodigoProducto.Clear();
-                    txtCantidad.Clear();
-
-                    MessageBox.Show("Producto borrado con exito", "Info", MessageBoxButtons.OK, MessageBoxIcon.Information);
-
-                }
-                else
-                {
-                    throw new ArgumentException("Por favor seleccione al menos un producto");
+                    else
+                    {
+                        throw new ArgumentException("No se ha podido eliminar el producto");
+                    }
                 }
             }
             catch (ArgumentException ex)
@@ -694,58 +679,33 @@ namespace UAI_HIPERMERCADO
            
         }
 
+        void AsignarProd()
+        {
+            oBEProducto.Codigo = Convert.ToInt32(txtCodigoProducto.Text);
+            oBEProducto.Nombre=txtNombreProducto.Text;
+            oBEProducto.Precio = Convert.ToInt32(txtPrecioProducto.Text);
+            oBEProducto.Cantidad = Convert.ToInt32((txtCantidad.Text));
+        }
+
         private void btnModificarProducto_Click(object sender, EventArgs e)
         {
             try
             {
-                if (txtCodigoProducto.Text == string.Empty || txtCantidad.Text == string.Empty || txtPrecioProducto.Text == string.Empty)
-                {
-                    throw new ArgumentException("Debe completar todos los campos para modificar!");
-                }
+                   if (txtNombreProducto.Text == string.Empty || txtCantidad.Text == string.Empty || txtPrecioProducto.Text == string.Empty)
+                   {
+                      throw new ArgumentException("Debe completar todos los campos para modificar!");
+                   }
 
-                if (cbProducto.SelectedItem == null)
-                {
-                    throw new ArgumentException("Debe seleccionar un producto!");
-                }
+                  if (cbProducto.SelectedItem == null)
+                  {
+                        throw new ArgumentException("Debe seleccionar un producto!");
+                  }
 
-                int cod = Convert.ToInt32(txtCodigoProducto.Text);
-                oProducto = new Producto();
-                oProducto.Nombre = cbNombreProducto.Text;
-                oProducto.Cantidad = Convert.ToInt32(txtCantidad.Text);
-                oProducto.Precio = Convert.ToDouble(txtPrecioProducto.Text);
-
-                bool busqueda = false;
-                if (cbProducto.SelectedItem != null)
-                {
-                    foreach (Producto item in LstProductos)
-                    {
-                        if (cod == item.Codigo)
-                        {
-                            item.Nombre = oProducto.Nombre;
-                            item.Cantidad = oProducto.Cantidad;
-                            item.Precio = oProducto.Precio;
-                            MessageBox.Show("Producto modificado con exito", "Info", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                            busqueda = true;
-                            break;
-                        }
-                    }
-
-
-                    if (busqueda == false)
-                    {
-                        throw new ProductoNoEncontrado();
-                    }
-
-                    CargarProductoAdata();
-                    txtPrecioProducto.Clear();
-                    txtCodigoProducto.Clear();
-                    txtCantidad.Clear();
-
-                }
-            }
-            catch (ProductoNoEncontrado ex)
-            {
-                MessageBox.Show($"{ex.Message}");
+                AsignarProd();
+                oBLLProd.Guardar(oBEProducto);
+                CargarProductoAdata();
+                LimpiarProducto();
+                MessageBox.Show("Producto modificado con exito", "Info", MessageBoxButtons.OK, MessageBoxIcon.Information);
             }
 
             catch (ArgumentException ex)
@@ -760,31 +720,46 @@ namespace UAI_HIPERMERCADO
 
         }
 
-        private void btnClonar_Click(object sender, EventArgs e)
+        private void cbProducto_SelectedIndexChanged(object sender, EventArgs e)
         {
-            try
-            {
-                if (cbProducto.SelectedItem != null)
-                {
-                    oProducto = (Producto)cbProducto.SelectedItem;
-                    cbProductoClon.Items.Add(oProducto.Clone());
-                    MessageBox.Show("Producto clonado con exito");
+            oBEProducto = (BEProducto)this.cbProducto.SelectedItem;
 
-                }
-                else
-                {
-                    throw new ArgumentException("Debe haber algun producto para clonar");
-                }
+            if (oBEProducto != null)
+            { txtCodigoProducto.Text = oBEProducto.Codigo.ToString();
+                txtNombreProducto.Text = oBEProducto.Nombre.ToString();
+                txtCantidad.Text=oBEProducto.Cantidad.ToString();
+                txtPrecioProducto.Text=oBEProducto.Precio.ToString();
             }
-            catch (ArgumentException ex)
-            {
-                MessageBox.Show($"{ex.Message}");
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show($"{ex.Message}");
-            }
+        }
 
+        private void btnCancelar_Click(object sender, EventArgs e)
+        {
+            LimpiarProducto();
+        }
+
+        private void button1_Click(object sender, EventArgs e)
+        {
+            txtNombre.Text = string.Empty;
+            txtApellido.Text = string.Empty;
+            txtCUIT.Text = string.Empty;
+            txtRazonSocial.Text = string.Empty; 
+            txtCodigo.Text = string.Empty;
+            rbIndividuo.Checked = false;
+            rbPyme.Checked = false;
+        }
+
+        private void groupBox1_Enter(object sender, EventArgs e)
+        {
+
+        }
+
+        private void groupBox5_Enter(object sender, EventArgs e)
+        {
+
+        }
+
+        private void txtAbonoFactura_TextChanged(object sender, EventArgs e)
+        {
 
         }
     }

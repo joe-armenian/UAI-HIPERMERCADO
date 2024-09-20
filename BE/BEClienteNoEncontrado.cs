@@ -4,13 +4,13 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace UAI_HIPERMERCADO
+namespace BE
 {
-    public class ClienteNoEncontrado:Exception
+    public class BEClienteNoEncontrado:Exception
     {
         public override string Message
         {
-            get { return "Cliente no encontrado";}
+            get { return "Cliente no encontrado"; }
         }
     }
 }

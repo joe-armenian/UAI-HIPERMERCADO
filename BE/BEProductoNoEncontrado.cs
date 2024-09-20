@@ -4,9 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace UAI_HIPERMERCADO
+namespace BE
 {
-    public class ProductoNoEncontrado:Exception
+    public class BEProductoNoEncontrado:Exception
     {
         public override string Message
         {

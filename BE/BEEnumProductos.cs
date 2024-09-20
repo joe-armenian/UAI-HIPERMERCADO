@@ -4,9 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace UAI_HIPERMERCADO
+namespace BE
 {
-    public class EnumParaProductos
+    public class BEEnumProductos
     {
         public enum ProductosVarios
         {
@@ -25,5 +25,6 @@ namespace UAI_HIPERMERCADO
             SaladixQueso,
             Polenta
         }
+
     }
 }

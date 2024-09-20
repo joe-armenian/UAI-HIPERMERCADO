@@ -16,7 +16,7 @@ namespace UAI_HIPERMERCADO
         {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            Application.Run(new MDI());
+            Application.Run(new Login());
         }
     }
 }

@@ -46,31 +46,40 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="ClienteNoEncontrado.cs" />
-    <Compile Include="EnumParaProductos.cs" />
-    <Compile Include="Factura.cs" />
     <Compile Include="GestionHipermercado.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="GestionHipermercado.Designer.cs">
       <DependentUpon>GestionHipermercado.cs</DependentUpon>
     </Compile>
-    <Compile Include="ITCalculable.cs" />
+    <Compile Include="GestionUsuarios.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="GestionUsuarios.Designer.cs">
+      <DependentUpon>GestionUsuarios.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Login.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Login.Designer.cs">
+      <DependentUpon>Login.cs</DependentUpon>
+    </Compile>
     <Compile Include="MDI.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="MDI.Designer.cs">
       <DependentUpon>MDI.cs</DependentUpon>
     </Compile>
-    <Compile Include="Persona.cs" />
-    <Compile Include="PersonaIndividuo.cs" />
-    <Compile Include="PersonaPyme.cs" />
-    <Compile Include="Producto.cs" />
-    <Compile Include="ProductoNoEncontrado.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <EmbeddedResource Include="GestionHipermercado.resx">
       <DependentUpon>GestionHipermercado.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="GestionUsuarios.resx">
+      <DependentUpon>GestionUsuarios.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Login.resx">
+      <DependentUpon>Login.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="MDI.resx">
       <DependentUpon>MDI.cs</DependentUpon>
@@ -96,6 +105,20 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\BE\BE.csproj">
+      <Project>{51220151-b051-4d77-bdce-f95a802fab2b}</Project>
+      <Name>BE</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\BLL\NEGOCIO_BLL.csproj">
+      <Project>{f62c2214-6d0d-4f08-9538-a13f5a4dffd7}</Project>
+      <Name>NEGOCIO_BLL</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Seguridad\Seguridad.csproj">
+      <Project>{c5dcd7b4-c8d6-4428-a2f8-0fc6fadf3d3c}</Project>
+      <Name>Seguridad</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
