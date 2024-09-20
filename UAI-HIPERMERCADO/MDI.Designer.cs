@@ -31,8 +31,9 @@
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MDI));
             this.menuStrip1 = new System.Windows.Forms.MenuStrip();
             this.uAIHIPERMERCADOToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.cERRARAPPToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.gESTIONUSUARIOSToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.cERRARAPPToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.iNFORMESToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.menuStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -42,6 +43,7 @@
             this.menuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.uAIHIPERMERCADOToolStripMenuItem,
             this.gESTIONUSUARIOSToolStripMenuItem,
+            this.iNFORMESToolStripMenuItem,
             this.cERRARAPPToolStripMenuItem});
             this.menuStrip1.Location = new System.Drawing.Point(0, 0);
             this.menuStrip1.Name = "menuStrip1";
@@ -56,6 +58,13 @@
             this.uAIHIPERMERCADOToolStripMenuItem.Text = "GESTION UAI HIPERMERCADO";
             this.uAIHIPERMERCADOToolStripMenuItem.Click += new System.EventHandler(this.uAIHIPERMERCADOToolStripMenuItem_Click);
             // 
+            // gESTIONUSUARIOSToolStripMenuItem
+            // 
+            this.gESTIONUSUARIOSToolStripMenuItem.Name = "gESTIONUSUARIOSToolStripMenuItem";
+            this.gESTIONUSUARIOSToolStripMenuItem.Size = new System.Drawing.Size(157, 24);
+            this.gESTIONUSUARIOSToolStripMenuItem.Text = "GESTION USUARIOS";
+            this.gESTIONUSUARIOSToolStripMenuItem.Click += new System.EventHandler(this.gESTIONUSUARIOSToolStripMenuItem_Click);
+            // 
             // cERRARAPPToolStripMenuItem
             // 
             this.cERRARAPPToolStripMenuItem.Name = "cERRARAPPToolStripMenuItem";
@@ -63,12 +72,12 @@
             this.cERRARAPPToolStripMenuItem.Text = "CERRAR APP";
             this.cERRARAPPToolStripMenuItem.Click += new System.EventHandler(this.cERRARAPPToolStripMenuItem_Click);
             // 
-            // gESTIONUSUARIOSToolStripMenuItem
+            // iNFORMESToolStripMenuItem
             // 
-            this.gESTIONUSUARIOSToolStripMenuItem.Name = "gESTIONUSUARIOSToolStripMenuItem";
-            this.gESTIONUSUARIOSToolStripMenuItem.Size = new System.Drawing.Size(157, 24);
-            this.gESTIONUSUARIOSToolStripMenuItem.Text = "GESTION USUARIOS";
-            this.gESTIONUSUARIOSToolStripMenuItem.Click += new System.EventHandler(this.gESTIONUSUARIOSToolStripMenuItem_Click);
+            this.iNFORMESToolStripMenuItem.Name = "iNFORMESToolStripMenuItem";
+            this.iNFORMESToolStripMenuItem.Size = new System.Drawing.Size(94, 24);
+            this.iNFORMESToolStripMenuItem.Text = "INFORMES";
+            this.iNFORMESToolStripMenuItem.Click += new System.EventHandler(this.iNFORMESToolStripMenuItem_Click);
             // 
             // MDI
             // 
@@ -99,6 +108,7 @@
         private System.Windows.Forms.ToolStripMenuItem uAIHIPERMERCADOToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem cERRARAPPToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem gESTIONUSUARIOSToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem iNFORMESToolStripMenuItem;
     }
 }
 

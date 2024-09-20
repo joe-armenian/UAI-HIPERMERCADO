@@ -19,10 +19,7 @@ namespace UAI_HIPERMERCADO
         public GestionHipermercado()
         {
             InitializeComponent();
-            //LstPersonasIndividuos = new List<PersonaIndividuo>();
-            //LstPymes = new List<PersonaPyme>();
-            //LstProductos = new List<Producto>();
-            //LstFacturas = new List<Factura>();
+           
             oBLLProd = new BLLProducto();
             oBEProducto= new BEProducto();
             oBLLPyme = new BLLPersonaPyme();
@@ -30,21 +27,12 @@ namespace UAI_HIPERMERCADO
             oBEPersonaIndividuo = new BEPersonaIndividuo();
             oBLLFactura=new BLLFactura();
             
-
-
         }
 
-        //List<PersonaIndividuo> LstPersonasIndividuos;
-        //List<PersonaPyme> LstPymes;
-        //List<Producto> LstProductos;
-        //List<Factura> LstFacturas;
 
 
         #region ObjetosParaElFormulario
-        //PersonaIndividuo oPersonaIndividuo;
-        //PersonaPyme oPersonaPyme;
-        //Producto oProducto;
-        //Factura oFactura;
+        
         BLLProducto oBLLProd;
         BEProducto oBEProducto;
         BLLPersonaPyme oBLLPyme;
@@ -54,8 +42,6 @@ namespace UAI_HIPERMERCADO
         BLLFactura oBLLFactura;
         BEFactura oBEFactura;
         #endregion
-
-
 
 
         #region ControlDeRadioButtons
@@ -80,6 +66,8 @@ namespace UAI_HIPERMERCADO
         }
         #endregion
 
+
+        #region LimpiezaTxtParaPersona
         void LimpiarPyme()
         {
             txtCUIT.Text = string.Empty;
@@ -93,6 +81,11 @@ namespace UAI_HIPERMERCADO
             txtCUIT.Text= string.Empty;
             txtCodigo.Text= string.Empty;
         }
+
+        #endregion
+
+
+        #region ReCargarDatos
         public void CargarPersonaIndData()
         {
             dgvPersonas.DataSource = null;
@@ -104,16 +97,6 @@ namespace UAI_HIPERMERCADO
         {
             dgvPyme.DataSource = null;
             dgvPyme.DataSource = oBLLPyme.ListarTodo();
-        }
-
-        private void GestionHipermercado_Load(object sender, EventArgs e)
-        {
-            MessageBox.Show("Usted ingresara a la seccion de hipermercado,gracias por utilizar nuestro servicio.", "Atencion", MessageBoxButtons.OK, MessageBoxIcon.Information);
-            CargarProductoAdata();
-            CargarPymeData();
-            CargarPersonaIndData();
-            CargarFactura();
-
         }
 
         void CargarFactura()
@@ -128,6 +111,23 @@ namespace UAI_HIPERMERCADO
             cbProducto.DataSource = oBLLProd.ListarTodo();
             cbProducto.Refresh();
         }
+        #endregion
+
+
+        #region LoadGestionHiperMercado
+
+        private void GestionHipermercado_Load(object sender, EventArgs e)
+        {
+            MessageBox.Show("Usted ingresara a la seccion de hipermercado,gracias por utilizar nuestro servicio.", "Atencion", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            CargarProductoAdata();
+            CargarPymeData();
+            CargarPersonaIndData();
+            CargarFactura();
+
+        }
+        #endregion
+
+
 
         #region AltaPersona
         private void btnAlta_Click(object sender, EventArgs e)
@@ -135,16 +135,16 @@ namespace UAI_HIPERMERCADO
 
             try
             {
-                // Verificar que el campo CUIT no esté vacío
+               
                 if (txtCUIT.Text == string.Empty)
                 {
                     throw new ArgumentException("Por favor complete el campo CUIT.");
                 }
 
-                // Si se seleccionó la opción Individuo
+                
                 if (rbIndividuo.Checked)
                 {
-                  // Verificar que se hayan ingresado nombre y apellido
+                  
                    if (txtApellido.Text == string.Empty || txtNombre.Text == string.Empty)
                    {
                       throw new ArgumentException("Por favor complete los campos nombre y apellido.");
@@ -157,36 +157,36 @@ namespace UAI_HIPERMERCADO
                        oBEPersonaIndividuo.Apellido = txtApellido.Text;
                        oBLLPIndividuo.Guardar(oBEPersonaIndividuo);
 
-                     // Actualizar los datos en el DataGridView
+                  
                          CargarPersonaIndData();
                          LimpiarIndividuo();
 
-                      // Mostrar mensaje de éxito
+                     
                       MessageBox.Show("Cliente Persona creado con éxito", "Info", MessageBoxButtons.OK, MessageBoxIcon.Information);
 
                    
                     }
-                    //// Si se seleccionó la opción PYME
+                  
                     else if (rbPyme.Checked)
                     {
-                      // Verificar que se haya ingresado la razón social
+                     
                       if (txtRazonSocial.Text == string.Empty)
                        {
                            throw new ArgumentException("Por favor complete el campo razón social.");
                       }
-                       // Crear una nueva instancia de PersonaPyme
+                      
                              oBEPyme = new BEPersonaPyme();
                              oBEPyme.CUIT = Convert.ToInt64(txtCUIT.Text);
                              oBEPyme.RazonSocial = txtRazonSocial.Text;
 
-                       // Agregar la persona pyme a la lista correspondiente
+                      
                            oBLLPyme.Guardar(oBEPyme);
 
-                      // Actualizar los datos en el DataGridView
+                     
                        CargarPymeData();
-                      // Limpiar los campos de entrada
+                   
                         LimpiarPyme();
-                    // Mostrar mensaje de éxito
+                 
                     MessageBox.Show("Cliente PYME creado con éxito", "Info", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 }
             }
@@ -202,8 +202,6 @@ namespace UAI_HIPERMERCADO
         }
 
         #endregion
-
-
 
 
 
@@ -282,6 +280,10 @@ namespace UAI_HIPERMERCADO
 
         #endregion
 
+
+
+        #region CellContentPersonas
+
         private void dgvPersonas_CellContentClick(object sender, DataGridViewCellEventArgs e)
         {
             dgvPyme.ClearSelection();
@@ -307,6 +309,10 @@ namespace UAI_HIPERMERCADO
             txtApellido.Text = string.Empty;
             rbPyme.Checked = true;
         }
+        #endregion
+
+
+        #region AsignacionesParaABMPersonas
         void AsignarIndivdual()
         {
             oBEPersonaIndividuo.Codigo = Convert.ToInt32(txtCodigo.Text);
@@ -321,6 +327,7 @@ namespace UAI_HIPERMERCADO
             oBEPyme.RazonSocial = txtRazonSocial.Text;
             oBEPyme.CUIT= Convert.ToInt64(txtCUIT.Text);
         }
+        #endregion
 
 
         #region ModificarPersona
@@ -391,6 +398,8 @@ namespace UAI_HIPERMERCADO
 
         #endregion
 
+
+        #region AltaProducto
         private void btnAltaProducto_Click(object sender, EventArgs e)
         {
             try
@@ -426,6 +435,10 @@ namespace UAI_HIPERMERCADO
 
         }
 
+        #endregion
+
+
+        #region AsociarProducto
         private void btnAsociarProducto_Click(object sender, EventArgs e)
         {
             try
@@ -482,7 +495,11 @@ namespace UAI_HIPERMERCADO
 
 
         }
+        #endregion
 
+
+
+        #region CrearFactura
         private void btnCrearFactura_Click(object sender, EventArgs e)
         {
 
@@ -525,10 +542,11 @@ namespace UAI_HIPERMERCADO
             }
 
         }
+        #endregion
 
-      
-        
 
+
+        #region CellContentFactura
         private void dgvFactura_CellContentClick(object sender, DataGridViewCellEventArgs e)
         {
             oBEFactura = (BEFactura)dgvFactura.CurrentRow.DataBoundItem;
@@ -582,7 +600,10 @@ namespace UAI_HIPERMERCADO
 
 
         }
+        #endregion
 
+
+        #region PagarProducto
         private void btnPagarProducto_Click(object sender, EventArgs e)
         {
             try
@@ -643,10 +664,10 @@ namespace UAI_HIPERMERCADO
 
 
             }
+        #endregion
 
 
-
-
+        #region BajaProducto
         private void btnBajaProducto_Click(object sender, EventArgs e)
         {
             try
@@ -678,7 +699,10 @@ namespace UAI_HIPERMERCADO
             }
            
         }
+        #endregion
 
+
+        #region AsignarProductoParaABM
         void AsignarProd()
         {
             oBEProducto.Codigo = Convert.ToInt32(txtCodigoProducto.Text);
@@ -686,7 +710,11 @@ namespace UAI_HIPERMERCADO
             oBEProducto.Precio = Convert.ToInt32(txtPrecioProducto.Text);
             oBEProducto.Cantidad = Convert.ToInt32((txtCantidad.Text));
         }
+        #endregion
 
+
+
+        #region ModificarProducto
         private void btnModificarProducto_Click(object sender, EventArgs e)
         {
             try
@@ -719,7 +747,11 @@ namespace UAI_HIPERMERCADO
 
 
         }
+        #endregion
 
+
+
+        #region ProductoIndexChange(Para no tener errores con los txt)
         private void cbProducto_SelectedIndexChanged(object sender, EventArgs e)
         {
             oBEProducto = (BEProducto)this.cbProducto.SelectedItem;
@@ -731,7 +763,11 @@ namespace UAI_HIPERMERCADO
                 txtPrecioProducto.Text=oBEProducto.Precio.ToString();
             }
         }
+        #endregion
 
+
+
+        #region Limpiezas
         private void btnCancelar_Click(object sender, EventArgs e)
         {
             LimpiarProducto();
@@ -762,5 +798,6 @@ namespace UAI_HIPERMERCADO
         {
 
         }
+        #endregion
     }
 }

@@ -18,6 +18,7 @@ namespace UAI_HIPERMERCADO
         }
         public GestionHipermercado oGestionHipermercado;
         public GestionUsuarios oGestionUsuarios;
+        public Informes oInformes;
         
 
         private void uAIHIPERMERCADOToolStripMenuItem_Click(object sender, EventArgs e)
@@ -49,6 +50,16 @@ namespace UAI_HIPERMERCADO
                 oGestionUsuarios=new GestionUsuarios();
                 oGestionUsuarios.MdiParent = this;
                 oGestionUsuarios.Show();
+            }
+        }
+
+        private void iNFORMESToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            if (oInformes == null)
+            {
+                oInformes = new Informes();
+                oInformes.MdiParent = this; 
+                oInformes.Show();   
             }
         }
     }
