@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace BE
 {
-    public class BEFactura
+    public class BEFactura:BEEntidad
     {
 
         #region Propiedades
@@ -14,7 +14,7 @@ namespace BE
 
         //int randomID = new Random().Next(1, 500);
 
-        public int Codigo { get; set; }
+       // public int Codigo { get; set; }
 
         public DateTime FechaFactura { get; set; }
         public string Estado { get; set; }

@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using System.Data;
 using MPP;
 using BE;
+using Abstraccion;
 
 
 namespace BLL

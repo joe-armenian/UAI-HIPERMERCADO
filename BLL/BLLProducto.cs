@@ -6,6 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using MPP;
 using System.CodeDom;
+using Abstraccion;
 
 namespace BLL
 {

@@ -4,11 +4,11 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{756FB008-038F-4F7A-B5ED-BBAFEE606086}</ProjectGuid>
+    <ProjectGuid>{C23DC879-69FD-43B2-95A2-AF8F952F73BB}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>MPP</RootNamespace>
-    <AssemblyName>MPP</AssemblyName>
+    <RootNamespace>Abstraccion</RootNamespace>
+    <AssemblyName>Abstraccion</AssemblyName>
     <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <Deterministic>true</Deterministic>
@@ -41,26 +41,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="MPPFactura.cs" />
-    <Compile Include="MPPProducto.cs" />
-    <Compile Include="MPPIndividuo.cs" />
-    <Compile Include="MPPUsuario.cs" />
-    <Compile Include="MPPyme.cs" />
+    <Compile Include="IEntidad.cs" />
+    <Compile Include="IGestor.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\Abstraccion\Abstraccion.csproj">
-      <Project>{c23dc879-69fd-43b2-95a2-af8f952f73bb}</Project>
-      <Name>Abstraccion</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\BE\BE.csproj">
-      <Project>{51220151-b051-4d77-bdce-f95a802fab2b}</Project>
-      <Name>BE</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\DAL\DAL.csproj">
-      <Project>{b2b52291-6185-4ff3-8179-12dc1457c9f0}</Project>
-      <Name>DAL</Name>
-    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

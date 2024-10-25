@@ -6,10 +6,10 @@ using System.Threading.Tasks;
 
 namespace BE
 {
-    public class BEProducto
+    public class BEProducto:BEEntidad
     {
         #region Propiedades
-        public int Codigo { get; set; }
+       // public int Codigo { get; set; }
         public string Nombre { get; set; }
         public int Precio { get; set; }
 

@@ -4,9 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace BLL
+namespace Abstraccion
 {
-    internal interface IGestor<T>
+    public interface IGestor<T> where T:IEntidad
     {
         bool Guardar(T Objeto);
         bool Baja(T Objeto);

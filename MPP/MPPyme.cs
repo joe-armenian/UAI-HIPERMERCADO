@@ -6,7 +6,8 @@ using System.Threading.Tasks;
 using System.Data;
 using DAL;
 using BE;
-
+using Abstraccion;
+using System.Collections;
 
 namespace MPP
 {
@@ -16,7 +17,7 @@ namespace MPP
         List<BEPersonaPyme> BEListPyme;
         DataTable oTabla;
         BEPersonaPyme oBEPyme;
-
+        Hashtable Hdatos;
         public MPPyme()
         {
             oDatos=new Datos();
@@ -26,9 +27,9 @@ namespace MPP
         public List<BEPersonaPyme> ListarTodo()
         {
            BEListPyme=new List<BEPersonaPyme>();
-            string consulta = "select * from Persona";
+            string consulta = "Listar_Personas";
             oTabla = new DataTable();
-            oTabla = oDatos.Leer(consulta);
+            oTabla = oDatos.Leer(consulta, null);
 
             if (oTabla.Rows.Count > 0)
             {
@@ -55,23 +56,37 @@ namespace MPP
 
             if (oBEPyme.Codigo == 0)
             {
-                consulta = string.Format("Insert into Persona(CUIT,RazonSocial) values ({0},'{1}')",oBEPyme.CUIT,oBEPyme.RazonSocial);
+                consulta = "Guardar_PersonaPyme";
+                Hdatos=new Hashtable();
+                Hdatos.Add("@CUIT", oBEPyme.CUIT);
+                Hdatos.Add("@RazonSocial", oBEPyme.RazonSocial);
+
+                return oDatos.Escribir(consulta, Hdatos);
+
             }
             else
             {
-                consulta = string.Format("update Persona set CUIT={0},RazonSocial='{1}' where Codigo={2}",oBEPyme.CUIT,oBEPyme.RazonSocial,oBEPyme.Codigo);
+                consulta = "Modificar_PersonaPyme";
+                Hdatos = new Hashtable();
+                Hdatos.Add("@CUIT",oBEPyme.CUIT);
+                Hdatos.Add("@RazonSocial",oBEPyme.RazonSocial);
+                Hdatos.Add("@Codigo",oBEPyme.Codigo);
+
+                return oDatos.Escribir(consulta, Hdatos);
             }
 
-            return oDatos.Escribir(consulta);
         }
         public bool Baja(BEPersonaPyme oBEPyme)
         {
             oDatos=new Datos();
             string consulta;
+            Hdatos = new Hashtable();
+            Hdatos.Add("@Codigo",oBEPyme.Codigo);
+
             if (oBEPyme.Codigo != 0)
             {
-                consulta = string.Format("delete from Persona where Codigo={0}", oBEPyme.Codigo);
-                return oDatos.Escribir(consulta);
+                consulta = "Baja_PersonaPyme";
+                return oDatos.Escribir(consulta, Hdatos);
             }
             else
             {

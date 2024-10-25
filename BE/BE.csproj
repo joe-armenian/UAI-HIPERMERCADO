@@ -42,6 +42,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="BEClienteNoEncontrado.cs" />
+    <Compile Include="BEEntidad.cs" />
     <Compile Include="BEEnumProductos.cs" />
     <Compile Include="BEFactura.cs" />
     <Compile Include="BEPersona.cs" />
@@ -51,6 +52,12 @@
     <Compile Include="BEProductoNoEncontrado.cs" />
     <Compile Include="BEUsuario.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Abstraccion\Abstraccion.csproj">
+      <Project>{c23dc879-69fd-43b2-95a2-af8f952f73bb}</Project>
+      <Name>Abstraccion</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

@@ -6,9 +6,9 @@ using System.Threading.Tasks;
 
 namespace BE
 {
-    public abstract class BEPersona
+    public abstract class BEPersona:BEEntidad
     {
-        public int Codigo { get; set; }
+       //  public int Codigo { get; set; }
         public Int64 CUIT { get; set; }
 
         public double totalSimpuesto;

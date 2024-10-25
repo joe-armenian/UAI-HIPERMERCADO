@@ -6,6 +6,8 @@ using System.Threading.Tasks;
 using System.Data;
 using DAL;
 using BE;
+using Abstraccion;
+using System.Collections;
 
 namespace MPP
 {
@@ -15,6 +17,8 @@ namespace MPP
         List<BEPersonaIndividuo> BEListIndividuo;
         DataTable oTabla;
         BEPersonaIndividuo oBEIndividuo;
+        Hashtable Hdatos;
+        
         public MPPIndividuo() 
         {
             oDatos = new Datos();
@@ -24,9 +28,9 @@ namespace MPP
         {
             BEListIndividuo = new List<BEPersonaIndividuo>();
 
-            string consulta = "select * from Persona";
+            string consulta = "Listar_Personas";
             oTabla = new DataTable();
-            oTabla = oDatos.Leer(consulta);
+            oTabla = oDatos.Leer(consulta,null);
 
             if (oTabla.Rows.Count > 0)
             {
@@ -54,14 +58,28 @@ namespace MPP
 
             if (oBEIndividuo.Codigo == 0)
             {
-                consulta = string.Format("Insert into Persona(CUIT,Nombre,Apellido) values ({0},'{1}','{2}')",oBEIndividuo.CUIT,oBEIndividuo.Nombre,oBEIndividuo.Apellido);
+                consulta = "Guardar_PersonaIndividuo";
+                Hdatos=new Hashtable();
+
+                Hdatos.Add("@CUIT", oBEIndividuo.CUIT);
+                Hdatos.Add("@Nombre",oBEIndividuo.Nombre);
+                Hdatos.Add("@Apellido", oBEIndividuo.Apellido);
+                return oDatos.Escribir(consulta, Hdatos);
+                
+               
             }
             else
             {
-                consulta = string.Format("update Persona set CUIT={0},Nombre='{1}',Apellido='{2}' where Codigo={3}",oBEIndividuo.CUIT,oBEIndividuo.Nombre,oBEIndividuo.Apellido,oBEIndividuo.Codigo);
+                consulta = "Modificar_PersonaIndividuo";
+                Hdatos= new Hashtable();
+                Hdatos.Add("@CUIT",oBEIndividuo.CUIT);
+                Hdatos.Add("@Nombre",oBEIndividuo.Nombre);
+                Hdatos.Add("@Apellido",oBEIndividuo.Apellido);
+                Hdatos.Add("@Codigo", oBEIndividuo.Codigo);
+                return oDatos.Escribir(consulta,Hdatos);
             }
 
-            return oDatos.Escribir(consulta);
+         
         }
         public bool Baja(BEPersonaIndividuo oBEIndividuo)
         {
@@ -70,8 +88,10 @@ namespace MPP
 
             if (oBEIndividuo.Codigo != 0)
             {
-                consulta = string.Format("Delete from Persona where Codigo={0}", oBEIndividuo.Codigo);
-                return oDatos.Escribir(consulta);
+                consulta = "Baja_PersonaIndividuo";
+                Hdatos= new Hashtable();
+                Hdatos.Add("@Codigo", oBEIndividuo.Codigo);
+                return oDatos.Escribir(consulta, Hdatos);
             }
             else
             {

@@ -5,6 +5,8 @@ using System.Data.SqlClient;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Collections;
+using System.Diagnostics;
 
 
 namespace DAL
@@ -13,16 +15,32 @@ namespace DAL
     {
         private SqlConnection oCnn = new SqlConnection(@"Data Source=.\;Initial Catalog=UAI-HIPERMERCADO;Integrated Security=True");
 
-        SqlCommand cmd;
+       
+        DataTable oTabla;
+        SqlCommand Cmd;
+        SqlDataAdapter oDa;
+        SqlTransaction MyTrans;
 
-        public DataTable Leer(string consulta)
+
+        public DataTable Leer(string consulta, Hashtable Hdatos)
         {
-            DataTable tabla = new DataTable();
+            oTabla = new DataTable();
+            Cmd=new SqlCommand(consulta,oCnn);
+            Cmd.CommandType = CommandType.StoredProcedure;
+
+
             try
             {
-                SqlDataAdapter Da = new SqlDataAdapter(consulta, oCnn);
+                oDa = new SqlDataAdapter(Cmd);
+                if (Hdatos != null)
+                {
+                    foreach (string dato in Hdatos.Keys)
+                    {
+                        Cmd.Parameters.AddWithValue(dato, Hdatos[dato]);
+                    }
+                }
 
-                Da.Fill(tabla);
+                oDa.Fill(oTabla);
 
             }
             catch (SqlException ex)
@@ -33,17 +51,27 @@ namespace DAL
             { 
                 oCnn.Close();
             }
-            return tabla;
+            return oTabla;
         }
 
-        public bool LeerScalar(string consulta)
+        public bool LeerScalar(string consulta,Hashtable Hdatos)
         {
             oCnn.Open();
-            cmd = new SqlCommand(consulta, oCnn);
-            cmd.CommandType = CommandType.Text;
+            Cmd = new SqlCommand(consulta, oCnn);
+            Cmd.CommandType = CommandType.StoredProcedure;
+
             try
             {
-                int Respuesta = Convert.ToInt32(cmd.ExecuteScalar());
+                if ((Hdatos != null))
+                {
+                     
+                    foreach (string dato in Hdatos.Keys)
+                    {
+                      
+                        Cmd.Parameters.AddWithValue(dato, Hdatos[dato]);
+                    }
+                }
+                int Respuesta = Convert.ToInt32(Cmd.ExecuteScalar());
                 oCnn.Close();
                 if (Respuesta > 0)
                 { return true; }
@@ -59,32 +87,43 @@ namespace DAL
         }
 
 
-        public bool Escribir(string Consulta_SQL)
+        public bool Escribir(string Consulta_SQL,Hashtable Hdatos)
         {
 
-            oCnn.Open(); //abro conexion
-            SqlTransaction myTrans; //creo objeto trans para la consulta
-            cmd = new SqlCommand(); //instancio el cmd para ejecutar los comandos
-            myTrans = oCnn.BeginTransaction(); //le paso la ruta y hace el begin.
+            oCnn.Open(); 
 
-            cmd.CommandType = CommandType.Text; //al command le digo que es tipo texto.
-            cmd.Connection = oCnn; //le paso la conexion.
-            cmd.CommandText = Consulta_SQL; //le paso la consulta recibida x parametro.
             try
             {
-                cmd.Transaction = myTrans; //al objeto command, le paso la trans.
-                int respuesta = cmd.ExecuteNonQuery(); //si se ejecuta bien
-                myTrans.Commit(); //hace el commit.
+                MyTrans = oCnn.BeginTransaction(); //creo objeto trans para la consulta
+                Cmd = new SqlCommand(Consulta_SQL, oCnn, MyTrans); //instancio el cmd para ejecutar los comandos
+
+                Cmd.CommandType = CommandType.StoredProcedure; //al command le digo que es tipo tSPP.
+                if ((Hdatos != null))
+                {
+                    foreach (string dato in Hdatos.Keys)
+                    {
+                        Cmd.Parameters.AddWithValue(dato, Hdatos[dato]);
+                    }
+                }
+
+                int respuesta = Cmd.ExecuteNonQuery();
+                MyTrans.Commit();
                 return true;
             }
+
+           
+
+           
             catch (SqlException ex)
             {
-                myTrans.Rollback();
+                MyTrans.Rollback();
+                return false;
                 throw ex;
             }
             catch (Exception ex)
             {
-                myTrans.Rollback();
+                MyTrans.Rollback();
+                return false;
                 throw ex;
             }
 

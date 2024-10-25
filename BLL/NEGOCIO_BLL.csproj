@@ -47,10 +47,13 @@
     <Compile Include="BLLPersonaPyme.cs" />
     <Compile Include="BLLProducto.cs" />
     <Compile Include="BLLUsuario.cs" />
-    <Compile Include="IGestor.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Abstraccion\Abstraccion.csproj">
+      <Project>{c23dc879-69fd-43b2-95a2-af8f952f73bb}</Project>
+      <Name>Abstraccion</Name>
+    </ProjectReference>
     <ProjectReference Include="..\BE\BE.csproj">
       <Project>{51220151-b051-4d77-bdce-f95a802fab2b}</Project>
       <Name>BE</Name>

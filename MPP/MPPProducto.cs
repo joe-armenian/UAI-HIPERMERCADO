@@ -6,7 +6,8 @@ using System.Threading.Tasks;
 using BE;
 using DAL;
 using System.Data;
-
+using Abstraccion;
+using System.Collections;
 
 namespace MPP
 {
@@ -16,6 +17,8 @@ namespace MPP
         List<BEProducto> ListaProductos;
         DataTable oTabla;
         BEProducto oBEProducto;
+        Hashtable Hdatos;
+        
 
         public MPPProduct()
         {
@@ -26,8 +29,9 @@ namespace MPP
         public List<BEProducto> ListarTodo()
         {
             ListaProductos = new List<BEProducto>();
-            string Consulta = "Select Codigo,Nombre,Precio,Cantidad From Producto";
-            oTabla = oDatos.Leer(Consulta);
+            string Consulta = "Listar_Productos";
+            
+            oTabla = oDatos.Leer(Consulta, null);
 
             if (oTabla.Rows.Count > 0)
             {
@@ -55,15 +59,26 @@ namespace MPP
 
             if (oBEProducto.Codigo == 0)
             {
-                consulta_sql = string.Format("insert into Producto(Nombre,Precio,Cantidad) values('{0}',{1},{2})",oBEProducto.Nombre,oBEProducto.Precio,oBEProducto.Cantidad);
+                consulta_sql = "Guardar_Producto";
+                Hdatos=new Hashtable();
+                Hdatos.Add("@Nombre", oBEProducto.Nombre);
+                Hdatos.Add("@Precio", oBEProducto.Precio);
+                Hdatos.Add("@Cantidad", oBEProducto.Cantidad);
+
+                return oDatos.Escribir(consulta_sql,Hdatos);
+
             }
             else
             {
-                consulta_sql = string.Format("update Producto set Nombre='{0}',Precio={1},Cantidad={2} where Codigo={3}",oBEProducto.Nombre, oBEProducto.Precio, oBEProducto.Cantidad,oBEProducto.Codigo);
+                consulta_sql = "Modificar_Producto";
+                Hdatos = new Hashtable();
+                Hdatos.Add("@Nombre", oBEProducto.Nombre);
+                Hdatos.Add("@Precio", oBEProducto.Precio);
+                Hdatos.Add("@Cantidad", oBEProducto.Cantidad);
+                Hdatos.Add("@Codigo",oBEProducto.Codigo);
+                return oDatos.Escribir(consulta_sql,Hdatos);
 
             }
-
-           return  oDatos.Escribir(consulta_sql);
         }
 
         public bool Baja(BEProducto oBEProd)
@@ -73,8 +88,10 @@ namespace MPP
 
             if (oBEProd.Codigo != 0)
             {
-                consulta = string.Format("delete from Producto where Codigo={0}", oBEProd.Codigo);
-                return oDatos.Escribir(consulta);
+                consulta = "Baja_Producto";
+                Hdatos=new Hashtable();
+                Hdatos.Add("@Codigo",oBEProd.Codigo);
+                return oDatos.Escribir(consulta,Hdatos);
             }
             else
             {

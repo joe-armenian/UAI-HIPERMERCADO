@@ -7,6 +7,9 @@ using System.Text;
 using System.Threading.Tasks;
 using BE;
 using DAL;
+using Abstraccion;
+using System.Collections;
+
 
 
 namespace MPP
@@ -14,14 +17,19 @@ namespace MPP
     public class MPPUsuario
     {
         Datos oDatos;
+        Hashtable Hdatos;
 
         public bool Baja(BEUsuario Objeto)
         {
             if (Objeto.Usuario.Length > 2)
             {
-                string Consulta_SQL = "DELETE FROM Usuarios where Codigo = " + Objeto.Usuario + "";
+                string Consulta_SQL = "Baja_Usuario";
+                Hdatos=new Hashtable();
+                Hdatos.Add("@Username",Objeto.Usuario);
+
                 oDatos = new Datos();
-                return oDatos.Escribir(Consulta_SQL);
+                return oDatos.Escribir(Consulta_SQL,Hdatos);
+
             }
             else
             { return false; }
@@ -29,27 +37,40 @@ namespace MPP
 
         public bool Guardar(BEUsuario oUsuario)
         {
-            
+            oDatos = new Datos();
             string consulta = string.Empty;
 
             if (oUsuario.Usuario.Length > 0)
             {
-                consulta = string.Format("Insert into Usuarios(Username,Password) values('{0}','{1}')",oUsuario.Usuario,oUsuario.Contrasenia);
-            }
-            else
-            {
-                consulta = string.Format("Update Usuarios SET Password='{0}' where Username='{1}')",oUsuario.Contrasenia, oUsuario.Usuario);
+                consulta = "Guardar_Usuario";
+                Hdatos = new Hashtable();
+                Hdatos.Add("@Username",oUsuario.Usuario);
+                Hdatos.Add("@Password", oUsuario.Contrasenia);
+
+                return oDatos.Escribir(consulta,Hdatos);
             }
 
-            oDatos = new Datos();
-            return oDatos.Escribir(consulta);
+            else
+            {
+                consulta = "Modificar_Usuario";
+                Hdatos = new Hashtable();
+                Hdatos.Add("@Password", oUsuario.Contrasenia);
+                Hdatos.Add("@Username", oUsuario.Usuario);
+                return oDatos.Escribir(consulta, Hdatos);
+            }
+
+           
         }
 
         public bool ListarObjeto(BEUsuario oUsuario)
         {
-            string Consulta =string.Format("Select * from Usuarios where Username='{0}' and Password='{1}'",oUsuario.Usuario,oUsuario.Contrasenia);
+            string Consulta =string.Format("Listar_Usuario");
+            Hdatos=new Hashtable();
+            Hdatos.Add("@Username",oUsuario.Usuario);
+            Hdatos.Add("@Password",oUsuario.Contrasenia);
+
             oDatos = new Datos();
-            DataTable Tabla = oDatos.Leer(Consulta);
+            DataTable Tabla = oDatos.Leer(Consulta,Hdatos);
 
             if (Tabla.Rows.Count > 0)
 

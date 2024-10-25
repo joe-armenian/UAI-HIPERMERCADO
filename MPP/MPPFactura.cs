@@ -8,6 +8,8 @@ using DAL;
 using BE;
 using System.Data.Odbc;
 using System.Runtime.Remoting.Messaging;
+using Abstraccion;
+using System.Collections;
 
 namespace MPP
 {
@@ -21,6 +23,7 @@ namespace MPP
         BEFactura oBEFactura;
         List<BEProducto> ListaBEProductos;
         BEProducto oBEProducto;
+        Hashtable Hdatos;
         public MPPFactura() 
         { 
             oDatos = new Datos(); 
@@ -30,11 +33,11 @@ namespace MPP
         { 
             ListaBEFactura = new List<BEFactura>();
 
-            string consulta = "select Factura.Codigo,Estado,FechaFactura,Persona.CUIT,Persona.Nombre,Persona.Apellido,Persona.RazonSocial from Factura,Persona where Factura.CodPersona=Persona.Codigo";
+            string consulta = "Listar_Facturas";
             
             oTabla=new DataTable();
             
-            oTabla = oDatos.Leer(consulta);
+            oTabla = oDatos.Leer(consulta,null);
 
             if (oTabla.Rows.Count > 0)
             {
@@ -62,13 +65,17 @@ namespace MPP
                     }
                     //comienza pruebas
 
-                    string consulta2 = string.Format("Select P.Codigo,P.Nombre,P.Precio,Factura_Producto.CantidadEspecifica from Factura_Producto,Producto as P, Factura as F" +
-                        " where Factura_Producto.CodProducto=P.Codigo and Factura_Producto.CodFactura=F.Codigo and F.Codigo={0}", oBEFactura.Codigo);
+                    
 
                     oDatos2 = new Datos();
-                    ListaBEProductos = new List<BEProducto>();
+                    Hdatos=new Hashtable();
+                    Hdatos.Add("@CodFactura", oBEFactura.Codigo);
+
+                    string consulta2 = "Listar_FacturaProductosC";
+
                     oTabla2 = new DataTable();
-                    oTabla2 = oDatos2.Leer(consulta2);
+                    oTabla2 = oDatos2.Leer(consulta2,Hdatos);
+                    ListaBEProductos = new List<BEProducto>();
 
                     if (oTabla2.Rows.Count > 0)
                     {
@@ -101,8 +108,12 @@ namespace MPP
 
             if (oBeFactura.Codigo != 0 && oBEProducto.Codigo != 0)
             {
-                consulta = string.Format("insert into Factura_Producto(CodFactura,CodProducto,CantidadEspecifica) values ({0},{1},{2})", oBeFactura.Codigo, oBEProducto.Codigo, oBEProducto.Cantidad);
-                return oDatos.Escribir(consulta);
+                consulta = "Asociar_Producto";
+                Hdatos=new Hashtable();
+                Hdatos.Add("@CodFactura", oBeFactura.Codigo);
+                Hdatos.Add("@CodProducto", oBEProducto.Codigo);
+                Hdatos.Add("@CantidadEspecifica",oBEProducto.Cantidad);
+                return oDatos.Escribir(consulta, Hdatos);
             }
             else
             {
@@ -117,8 +128,14 @@ namespace MPP
 
             if (OBEFactura.Codigo == 0)
             {
-                consulta = string.Format("insert into Factura(Estado,FechaFactura,CodPersona) values ('{0}','{1}',{2})", OBEFactura.Estado, OBEFactura.FechaFactura.ToString("yyyy-MM-dd"),OBEFactura.Persona.Codigo);
-                return oDatos.Escribir(consulta);
+                consulta = "Guardar_Factura";
+                Hdatos = new Hashtable();
+                Hdatos.Add("@Estado",OBEFactura.Estado);
+                Hdatos.Add("@FechaFactura", OBEFactura.FechaFactura.ToString("yyyy/MM/dd"));
+                Hdatos.Add("@CodPersona",OBEFactura.Persona.Codigo);
+                return oDatos.Escribir(consulta,Hdatos);
+
+
             }
             else
             {
@@ -128,10 +145,16 @@ namespace MPP
 
         public bool FacturaAbonada(BEFactura oBEFactura)
         {
-            string consulta;
+            string consulta = "Factura_Abonado";
 
-            consulta = string.Format("update Factura SET Estado='{0}' where Codigo={1}","Abonado",oBEFactura.Codigo);
-            return oDatos.Escribir(consulta);
+            Hdatos=new Hashtable();
+
+            Hdatos.Add("@Codigo",oBEFactura.Codigo);
+            Hdatos.Add("@Estado","Abonado");
+            
+            return oDatos.Escribir(consulta, Hdatos);
+
+
 
         }
 
