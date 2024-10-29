@@ -7,25 +7,22 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using BE;
-using BLL;
-using Seguridad;
 
 namespace UAI_HIPERMERCADO
 {
-    public partial class LoGin : Form
+    public partial class Prueba : UserControl
     {
-        public LoGin()
+        public Prueba()
         {
             InitializeComponent();
         }
 
-        private void LoGin_Load(object sender, EventArgs e)
+        private void checkBox1_CheckedChanged(object sender, EventArgs e)
         {
 
         }
 
-        private void uC_LOGIN1_Load(object sender, EventArgs e)
+        private void Prueba_Load(object sender, EventArgs e)
         {
 
         }

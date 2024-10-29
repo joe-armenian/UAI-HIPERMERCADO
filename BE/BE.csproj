@@ -50,6 +50,7 @@
     <Compile Include="BEPersonaPyme.cs" />
     <Compile Include="BEProducto.cs" />
     <Compile Include="BEProductoNoEncontrado.cs" />
+    <Compile Include="BEResumenInformes.cs" />
     <Compile Include="BEUsuario.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
@@ -57,6 +58,10 @@
     <ProjectReference Include="..\Abstraccion\Abstraccion.csproj">
       <Project>{c23dc879-69fd-43b2-95a2-af8f952f73bb}</Project>
       <Name>Abstraccion</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\DAL\DAL.csproj">
+      <Project>{b2b52291-6185-4ff3-8179-12dc1457c9f0}</Project>
+      <Name>DAL</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

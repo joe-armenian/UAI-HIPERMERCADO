@@ -21,7 +21,24 @@ namespace DAL
         SqlDataAdapter oDa;
         SqlTransaction MyTrans;
 
-
+        public DataSet LeerDesconectado(string consulta)
+        {
+            DataSet Ds = new DataSet();
+            try
+            {
+                SqlDataAdapter Da = new SqlDataAdapter(consulta,oCnn);
+                Da.Fill(Ds);
+            }
+            catch (SqlException ex)
+            {
+                throw (ex);
+            }
+            catch (Exception ex)
+            {
+                throw (ex);
+            }
+            return Ds;
+        }
         public DataTable Leer(string consulta, Hashtable Hdatos)
         {
             oTabla = new DataTable();

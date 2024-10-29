@@ -13,21 +13,25 @@ using Seguridad;
 
 namespace UAI_HIPERMERCADO
 {
-    public partial class LoGin : Form
+    public partial class Login : Form
     {
-        public LoGin()
+        public Login()
         {
             InitializeComponent();
+            
         }
+       
 
-        private void LoGin_Load(object sender, EventArgs e)
+
+        private void Login_Load(object sender, EventArgs e)
         {
 
         }
 
-        private void uC_LOGIN1_Load(object sender, EventArgs e)
-        {
+       
 
-        }
+        
+
+        
     }
 }

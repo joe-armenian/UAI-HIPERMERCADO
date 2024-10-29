@@ -1,6 +1,6 @@
 ﻿namespace UAI_HIPERMERCADO
 {
-    partial class LoGin
+    partial class Login
     {
         /// <summary>
         /// Required designer variable.
@@ -28,36 +28,24 @@
         /// </summary>
         private void InitializeComponent()
         {
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(LoGin));
-            this.uC_LOGIN1 = new UAI_HIPERMERCADO.UC_LOGIN();
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Login));
             this.SuspendLayout();
             // 
-            // uC_LOGIN1
-            // 
-            this.uC_LOGIN1.BackColor = System.Drawing.SystemColors.ButtonShadow;
-            this.uC_LOGIN1.Location = new System.Drawing.Point(48, 10);
-            this.uC_LOGIN1.Name = "uC_LOGIN1";
-            this.uC_LOGIN1.Size = new System.Drawing.Size(492, 288);
-            this.uC_LOGIN1.TabIndex = 0;
-            this.uC_LOGIN1.Load += new System.EventHandler(this.uC_LOGIN1_Load);
-            // 
-            // LoGin
+            // Login
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
-            this.ClientSize = new System.Drawing.Size(586, 310);
-            this.Controls.Add(this.uC_LOGIN1);
+            this.BackColor = System.Drawing.SystemColors.AppWorkspace;
+            this.ClientSize = new System.Drawing.Size(711, 330);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
-            this.Name = "LoGin";
-            this.Text = "LoGin";
-            this.Load += new System.EventHandler(this.LoGin_Load);
+            this.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.Name = "Login";
+            this.Text = "Login";
+            this.Load += new System.EventHandler(this.Login_Load);
             this.ResumeLayout(false);
 
         }
 
         #endregion
-
-        private UC_LOGIN uC_LOGIN1;
     }
 }
