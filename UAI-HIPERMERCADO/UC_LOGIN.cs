@@ -3,9 +3,11 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.Drawing;
+using System.Globalization;
 using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using BE;
@@ -27,9 +29,32 @@ namespace UAI_HIPERMERCADO
         BLLUsuario oBLLUsuario;
         private MDI oMDI;
 
+        void CambiarIdioma(string Cultura)
+        {
+            Thread.CurrentThread.CurrentCulture = new CultureInfo(Cultura);
+            Thread.CurrentThread.CurrentUICulture = new CultureInfo(Cultura);
+
+            lblUsuario.Text = Recursos.Recurso.NombreUsuario;
+            lblPassword.Text = Recursos.Recurso.ContraUsuario;
+            btnAcceso.Text = Recursos.Recurso.BotonAcceso;
+            btnCancelar.Text=Recursos.Recurso.BotonCancelar;
+            groupBox1.Text=Recursos.Recurso.GroupBoxLogin;
+            
+
+
+
+        }
+
         private void UC_LOGIN_Load(object sender, EventArgs e)
         {
+            cbIdioma.DataSource = Enum.GetValues(typeof(Idioma));
+        }
 
+        enum Idioma
+        {
+            Español,
+            Armenio,
+            Ingles
         }
 
         private void btnAcceso_Click(object sender, EventArgs e)
@@ -92,6 +117,29 @@ namespace UAI_HIPERMERCADO
         {
             txt_Usuario.Clear();
             txt_Contrsenia.Clear();
+        }
+
+        private void cbIdioma_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            int A = Convert.ToInt32(cbIdioma.SelectedIndex.ToString());
+
+            switch (A)
+            {
+                case 0:
+                    CambiarIdioma("es-AR");
+                    break;
+                case 1:
+                    CambiarIdioma("hy-AM");
+                    break;
+                case 2:
+                    CambiarIdioma("en-US");
+                    break;
+            }
+        }
+
+        private void groupBox1_Enter(object sender, EventArgs e)
+        {
+
         }
     }
 }

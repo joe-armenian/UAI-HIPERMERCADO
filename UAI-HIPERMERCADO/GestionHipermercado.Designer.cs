@@ -780,7 +780,7 @@
             this.groupBox5.Controls.Add(this.label5);
             this.groupBox5.Controls.Add(this.lblImpuestos);
             this.groupBox5.ForeColor = System.Drawing.Color.White;
-            this.groupBox5.Location = new System.Drawing.Point(497, 588);
+            this.groupBox5.Location = new System.Drawing.Point(497, 615);
             this.groupBox5.Margin = new System.Windows.Forms.Padding(7, 2, 7, 2);
             this.groupBox5.Name = "groupBox5";
             this.groupBox5.Padding = new System.Windows.Forms.Padding(7, 2, 7, 2);

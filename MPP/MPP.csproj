@@ -42,6 +42,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="MPPFactura.cs" />
+    <Compile Include="MPPInformes.cs" />
     <Compile Include="MPPProducto.cs" />
     <Compile Include="MPPIndividuo.cs" />
     <Compile Include="MPPUsuario.cs" />

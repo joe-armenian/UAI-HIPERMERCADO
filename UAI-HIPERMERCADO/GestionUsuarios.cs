@@ -13,6 +13,10 @@ using BE;
 using BLL;
 using Seguridad;
 using System.Data.SqlClient;
+using System.Text.RegularExpressions;
+using static System.Windows.Forms.VisualStyles.VisualStyleElement.Button;
+using System.Globalization;
+using System.Threading;
 
 namespace UAI_HIPERMERCADO
 {
@@ -33,19 +37,24 @@ namespace UAI_HIPERMERCADO
 
         SqlConnection oCnn = new SqlConnection(@"Data Source=.\;Initial Catalog=UAI-HIPERMERCADO;Integrated Security=True");
 
-
+        
         void Limpiar()
         {
             txt_Contrasenia.Clear();
             txt_Usuario.Clear();
         }
+        public static bool ValidarEntradaALFoSIM(string linea)
+        {
+            return Regex.IsMatch(linea, @"^[A-Za-z]+$|^[0-9]+$|^[A-Za-z0-9]+$");
+        }
+
 
         private void btn_Generar_Click(object sender, EventArgs e)
         {
 
             try
             {
-                if (txt_Usuario.Text==string.Empty || txt_Contrasenia.Text==string.Empty)
+                if (txt_Usuario.Text==string.Empty || txt_Contrasenia.Text==string.Empty || !ValidarEntradaALFoSIM(txt_Usuario.Text) || !ValidarEntradaALFoSIM(txt_Contrasenia.Text))
                 {
                     throw new ArgumentException("Debe completar los campos correctamente");
                 }
@@ -102,7 +111,11 @@ namespace UAI_HIPERMERCADO
         private void GestionUsuarios_Load(object sender, EventArgs e)
         {
             CargarGrilla();
+            cbIdioma.DataSource = Enum.GetValues(typeof(Idioma));
         }
+
+        
+
 
         private void btnGrabar_Click(object sender, EventArgs e)
         {
@@ -126,6 +139,77 @@ namespace UAI_HIPERMERCADO
             txt_Contrasenia.Text = dgvUsuarios.Rows[e.RowIndex].Cells[1].Value.ToString();
 
 
+        }
+
+        private void btnModificar_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                if (txt_Usuario.Text == string.Empty || txt_Contrasenia.Text == string.Empty || !ValidarEntradaALFoSIM(txt_Usuario.Text) || !ValidarEntradaALFoSIM(txt_Contrasenia.Text))
+                {
+                    throw new ArgumentException("Debe completar los campos correctamente");
+                }
+                if (dgvUsuarios.SelectedRows.Count > 0)
+                {
+                    Dr = ((DataRowView)this.dgvUsuarios.SelectedRows[0].DataBoundItem).Row;
+                    //MODIFICAMOS LOS CAMPOS EN EL DATAROW QUE HABIAMOS OBTENIDO SELECCIONANDO LA FILA DE LA GRILLA
+                    Dr["Username"] = txt_Usuario.Text.ToString();
+                    Dr["Password"] = Encripta.Encriptar(txt_Contrasenia.Text);
+
+                    MessageBox.Show("Modificado con exito");
+                }
+                Limpiar();
+            }
+            catch (ArgumentException ex)
+            { MessageBox.Show(ex.Message); }
+            catch (Exception ex)
+            { MessageBox.Show(ex.Message); }
+        }
+
+
+        enum Idioma
+        {
+            Español,
+            Armenio,
+            Ingles
+        }
+
+        void CambiarIdioma(string Cultura)
+        {
+            Thread.CurrentThread.CurrentCulture = new CultureInfo(Cultura);
+            Thread.CurrentThread.CurrentUICulture = new CultureInfo(Cultura);
+
+            groupBox2.Text = Recursos.Recurso.GroupBoxGestion;
+            lblUsuarioGestion.Text = Recursos.Recurso.NombreUsuarioGestion;
+            lblContraGestion.Text = Recursos.Recurso.ContraUsuarioGestion;
+            btn_Generar.Text = Recursos.Recurso.BotonAltaGestion;
+            btn_Baja.Text = Recursos.Recurso.BotonBajaGestion;
+            btnModificar.Text = Recursos.Recurso.BotonCancelarGestion;
+            btnCancelar.Text = Recursos.Recurso.BotonModificarGestion;
+            btnGrabar.Text = Recursos.Recurso.BotonGrabarCambios;
+            lblMensaje.Text = Recursos.Recurso.LblMensaje;
+
+
+
+
+        }
+
+        private void cbIdioma_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            int A = Convert.ToInt32(cbIdioma.SelectedIndex.ToString());
+
+            switch (A)
+            {
+                case 0:
+                    CambiarIdioma("es-AR");
+                    break;
+                case 1:
+                    CambiarIdioma("hy-AM");
+                    break;
+                case 2:
+                    CambiarIdioma("en-US");
+                    break;
+            }
         }
     }
 }

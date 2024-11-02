@@ -10,6 +10,7 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using BLL;
 using BE;
+using System.Text.RegularExpressions;
 
 
 namespace UAI_HIPERMERCADO
@@ -127,6 +128,10 @@ namespace UAI_HIPERMERCADO
         }
         #endregion
 
+        public static bool ValidarEntradaALFoSIM(string linea)
+        {
+            return Regex.IsMatch(linea, @"^[A-Za-z]+$|^[0-9]+$|^[A-Za-z0-9]+$");
+        }
 
 
         #region AltaPersona
@@ -141,6 +146,7 @@ namespace UAI_HIPERMERCADO
                     throw new ArgumentException("Por favor complete el campo CUIT.");
                 }
 
+               
                 
                 if (rbIndividuo.Checked)
                 {

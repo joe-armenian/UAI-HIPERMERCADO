@@ -37,8 +37,11 @@
             this.txt_Contrsenia = new System.Windows.Forms.TextBox();
             this.txt_Usuario = new System.Windows.Forms.TextBox();
             this.btnAcceso = new System.Windows.Forms.Button();
+            this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.cbIdioma = new System.Windows.Forms.ComboBox();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
+            this.groupBox1.SuspendLayout();
             this.SuspendLayout();
             // 
             // btnCancelar
@@ -47,7 +50,7 @@
             this.btnCancelar.FlatAppearance.BorderColor = System.Drawing.Color.Black;
             this.btnCancelar.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnCancelar.ForeColor = System.Drawing.SystemColors.ButtonFace;
-            this.btnCancelar.Location = new System.Drawing.Point(194, 221);
+            this.btnCancelar.Location = new System.Drawing.Point(239, 298);
             this.btnCancelar.Margin = new System.Windows.Forms.Padding(4);
             this.btnCancelar.Name = "btnCancelar";
             this.btnCancelar.Size = new System.Drawing.Size(100, 28);
@@ -59,7 +62,7 @@
             // pictureBox2
             // 
             this.pictureBox2.Image = ((System.Drawing.Image)(resources.GetObject("pictureBox2.Image")));
-            this.pictureBox2.Location = new System.Drawing.Point(3, 7);
+            this.pictureBox2.Location = new System.Drawing.Point(18, 10);
             this.pictureBox2.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.pictureBox2.Name = "pictureBox2";
             this.pictureBox2.Size = new System.Drawing.Size(83, 54);
@@ -70,7 +73,7 @@
             // pictureBox1
             // 
             this.pictureBox1.Image = ((System.Drawing.Image)(resources.GetObject("pictureBox1.Image")));
-            this.pictureBox1.Location = new System.Drawing.Point(383, 22);
+            this.pictureBox1.Location = new System.Drawing.Point(457, 10);
             this.pictureBox1.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.pictureBox1.Name = "pictureBox1";
             this.pictureBox1.Size = new System.Drawing.Size(80, 62);
@@ -83,7 +86,7 @@
             this.lblPassword.AutoSize = true;
             this.lblPassword.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lblPassword.ForeColor = System.Drawing.SystemColors.Desktop;
-            this.lblPassword.Location = new System.Drawing.Point(70, 128);
+            this.lblPassword.Location = new System.Drawing.Point(115, 205);
             this.lblPassword.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.lblPassword.Name = "lblPassword";
             this.lblPassword.Size = new System.Drawing.Size(99, 17);
@@ -95,7 +98,7 @@
             this.lblUsuario.AutoSize = true;
             this.lblUsuario.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lblUsuario.ForeColor = System.Drawing.SystemColors.Desktop;
-            this.lblUsuario.Location = new System.Drawing.Point(70, 85);
+            this.lblUsuario.Location = new System.Drawing.Point(115, 162);
             this.lblUsuario.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.lblUsuario.Name = "lblUsuario";
             this.lblUsuario.Size = new System.Drawing.Size(64, 17);
@@ -105,7 +108,7 @@
             // txt_Contrsenia
             // 
             this.txt_Contrsenia.ForeColor = System.Drawing.SystemColors.ScrollBar;
-            this.txt_Contrsenia.Location = new System.Drawing.Point(180, 125);
+            this.txt_Contrsenia.Location = new System.Drawing.Point(225, 202);
             this.txt_Contrsenia.Margin = new System.Windows.Forms.Padding(4);
             this.txt_Contrsenia.Name = "txt_Contrsenia";
             this.txt_Contrsenia.Size = new System.Drawing.Size(132, 22);
@@ -116,7 +119,7 @@
             // txt_Usuario
             // 
             this.txt_Usuario.ForeColor = System.Drawing.SystemColors.ScrollBar;
-            this.txt_Usuario.Location = new System.Drawing.Point(180, 80);
+            this.txt_Usuario.Location = new System.Drawing.Point(225, 157);
             this.txt_Usuario.Margin = new System.Windows.Forms.Padding(4);
             this.txt_Usuario.Name = "txt_Usuario";
             this.txt_Usuario.Size = new System.Drawing.Size(132, 22);
@@ -129,7 +132,7 @@
             this.btnAcceso.FlatAppearance.BorderColor = System.Drawing.Color.Black;
             this.btnAcceso.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnAcceso.ForeColor = System.Drawing.SystemColors.ButtonFace;
-            this.btnAcceso.Location = new System.Drawing.Point(194, 173);
+            this.btnAcceso.Location = new System.Drawing.Point(239, 250);
             this.btnAcceso.Margin = new System.Windows.Forms.Padding(4);
             this.btnAcceso.Name = "btnAcceso";
             this.btnAcceso.Size = new System.Drawing.Size(100, 28);
@@ -138,11 +141,34 @@
             this.btnAcceso.UseVisualStyleBackColor = false;
             this.btnAcceso.Click += new System.EventHandler(this.btnAcceso_Click);
             // 
+            // groupBox1
+            // 
+            this.groupBox1.BackColor = System.Drawing.Color.SlateGray;
+            this.groupBox1.Controls.Add(this.cbIdioma);
+            this.groupBox1.ForeColor = System.Drawing.SystemColors.ActiveCaptionText;
+            this.groupBox1.Location = new System.Drawing.Point(45, 77);
+            this.groupBox1.Name = "groupBox1";
+            this.groupBox1.Size = new System.Drawing.Size(492, 56);
+            this.groupBox1.TabIndex = 24;
+            this.groupBox1.TabStop = false;
+            this.groupBox1.Text = "-";
+            this.groupBox1.Enter += new System.EventHandler(this.groupBox1_Enter);
+            // 
+            // cbIdioma
+            // 
+            this.cbIdioma.FormattingEnabled = true;
+            this.cbIdioma.Location = new System.Drawing.Point(174, 21);
+            this.cbIdioma.Name = "cbIdioma";
+            this.cbIdioma.Size = new System.Drawing.Size(131, 24);
+            this.cbIdioma.TabIndex = 0;
+            this.cbIdioma.SelectedIndexChanged += new System.EventHandler(this.cbIdioma_SelectedIndexChanged);
+            // 
             // UC_LOGIN
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.SystemColors.Control;
+            this.Controls.Add(this.groupBox1);
             this.Controls.Add(this.btnCancelar);
             this.Controls.Add(this.pictureBox2);
             this.Controls.Add(this.pictureBox1);
@@ -152,10 +178,11 @@
             this.Controls.Add(this.txt_Usuario);
             this.Controls.Add(this.btnAcceso);
             this.Name = "UC_LOGIN";
-            this.Size = new System.Drawing.Size(492, 288);
+            this.Size = new System.Drawing.Size(563, 343);
             this.Load += new System.EventHandler(this.UC_LOGIN_Load);
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
+            this.groupBox1.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -171,5 +198,7 @@
         private System.Windows.Forms.TextBox txt_Contrsenia;
         private System.Windows.Forms.TextBox txt_Usuario;
         private System.Windows.Forms.Button btnAcceso;
+        private System.Windows.Forms.GroupBox groupBox1;
+        private System.Windows.Forms.ComboBox cbIdioma;
     }
 }

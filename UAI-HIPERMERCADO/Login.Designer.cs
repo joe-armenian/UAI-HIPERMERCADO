@@ -34,19 +34,19 @@
             // 
             // uC_LOGIN1
             // 
-            this.uC_LOGIN1.BackColor = System.Drawing.SystemColors.ButtonShadow;
-            this.uC_LOGIN1.Location = new System.Drawing.Point(48, 10);
+            this.uC_LOGIN1.BackColor = System.Drawing.SystemColors.Control;
+            this.uC_LOGIN1.Location = new System.Drawing.Point(40, 33);
             this.uC_LOGIN1.Name = "uC_LOGIN1";
-            this.uC_LOGIN1.Size = new System.Drawing.Size(492, 288);
+            this.uC_LOGIN1.Size = new System.Drawing.Size(563, 343);
             this.uC_LOGIN1.TabIndex = 0;
-            this.uC_LOGIN1.Load += new System.EventHandler(this.uC_LOGIN1_Load);
+            this.uC_LOGIN1.Load += new System.EventHandler(this.uC_LOGIN1_Load_1);
             // 
             // LoGin
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
-            this.ClientSize = new System.Drawing.Size(586, 310);
+            this.ClientSize = new System.Drawing.Size(678, 415);
             this.Controls.Add(this.uC_LOGIN1);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "LoGin";

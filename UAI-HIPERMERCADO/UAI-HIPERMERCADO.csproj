@@ -59,11 +59,16 @@
     <Compile Include="GestionUsuarios.Designer.cs">
       <DependentUpon>GestionUsuarios.cs</DependentUpon>
     </Compile>
-    <Compile Include="Informes.cs">
+    <Compile Include="Recursos\Recurso.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Recurso.resx</DependentUpon>
+    </Compile>
+    <Compile Include="Reportes_Informess.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Informes.Designer.cs">
-      <DependentUpon>Informes.cs</DependentUpon>
+    <Compile Include="Reportes_Informess.Designer.cs">
+      <DependentUpon>Reportes_Informess.cs</DependentUpon>
     </Compile>
     <Compile Include="LoGin.cs">
       <SubType>Form</SubType>
@@ -91,8 +96,15 @@
     <EmbeddedResource Include="GestionUsuarios.resx">
       <DependentUpon>GestionUsuarios.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Informes.resx">
-      <DependentUpon>Informes.cs</DependentUpon>
+    <EmbeddedResource Include="Recursos\Recurso.hy-AM.resx" />
+    <EmbeddedResource Include="Recursos\Recurso.en-US.resx" />
+    <EmbeddedResource Include="Recursos\Recurso.es-AR.resx" />
+    <EmbeddedResource Include="Recursos\Recurso.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Recurso.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Reportes_Informess.resx">
+      <DependentUpon>Reportes_Informess.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="LoGin.resx">
       <DependentUpon>LoGin.cs</DependentUpon>
@@ -139,5 +151,6 @@
       <Name>Seguridad</Name>
     </ProjectReference>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
